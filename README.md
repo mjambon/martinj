@@ -1,3 +1,3 @@
 # martinj.art website
 
-https://martinj.art
+[martinj.art](https://martinj.art)
