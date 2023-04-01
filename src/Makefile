@@ -8,6 +8,7 @@ INDEX_DIRS = \
 
 DOCROOT = ../docs
 IMG = img
+CSS = css
 
 .PHONY: build
 build:
@@ -22,7 +23,7 @@ rebuild:
 .PHONY: all
 all:
 	$(MAKE) build
-	$(MAKE) -C ../..
+	$(MAKE) local
 	git status
 
 .PHONY: live
@@ -39,6 +40,10 @@ local:
 	  cp -u "$$dir"/index.html $(DOCROOT)/"$$dir"/; \
 	done
 	for x in $(IMG); do \
+	  mkdir -p $(DOCROOT)/$$x; \
+	  cp -r -u $$x/* $(DOCROOT)/$$x/; \
+	done
+	for x in $(CSS); do \
 	  mkdir -p $(DOCROOT)/$$x; \
 	  cp -r -u $$x/* $(DOCROOT)/$$x/; \
 	done

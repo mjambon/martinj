@@ -16,11 +16,11 @@ import os
 import re
 import subprocess
 
-FAVES_PATH = '/gallery'
-ALL_PATH = '/gallery/all'
-IMG_PATH = '/gallery/img'
-SERIES_PATH = '/gallery/series'
-ART_PATH = '/gallery/art'
+ALL_PATH = '/all'
+IMG_PATH = '/img'
+CSS_PATH = '/css'
+SERIES_PATH = '/series'
+ART_PATH = '/art'
 
 @dataclass
 class Page:
@@ -196,7 +196,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
 <div class="main_caption">
   Martin Jambon, {date_str}
   <a href="https://www.instagram.com/martinjambon/">
-    <img src="/gallery/img/other/instagram-logo.png"
+    <img src="{IMG_PATH}/other/instagram-logo.png"
         title="Instagram"
         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.5">
   </a>
@@ -405,7 +405,7 @@ def generate_series(
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{html.escape(page.title)}</title>
-  <link rel="stylesheet" href="/blog.css" />
+  <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
 /*
    Hide the site-wide navigation bar to avoid confusing the user
