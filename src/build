@@ -357,7 +357,7 @@ def print_series_row(row: Dict[str, str],
 <div class="main_caption">\
   Martin Jambon, {date_str}\
   <a href="https://www.instagram.com/martinjambon/">
-    <img src="/gallery/img/other/instagram-logo.png"
+    <img src="{IMG_PATH}/other/instagram-logo.png"
          title="Instagram"
          style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
   </a>
@@ -485,11 +485,12 @@ figcaption {{
         """
 </div>
 <p class="discreet" style="margin:4em 0em">
-  <a href="https://mjambon.com/gallery/all">These artworks</a>
+  All artworks on <a href="https://martinj.art/">martinj.art</a>
   ©&nbsp;2022&ndash;2023
   by <a href="https://mjambon.com">Martin Jambon</a>
   are licensed under
-  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC&nbsp;BY-NC-ND&nbsp;4.0</a>.
+  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC&nbsp;BY-NC-ND&nbsp;4.0</a>
+  unless stated otherwise.
 </p>
 """
         )
