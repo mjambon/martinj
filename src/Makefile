@@ -51,6 +51,6 @@ local:
 # Publish all changes
 .PHONY: push
 push:
-	git add .
+	git add ..
 	git commit -a -m 'Publish site'
 	git push origin main
