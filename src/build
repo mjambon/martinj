@@ -540,7 +540,7 @@ def generate_main(
 <head>
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
-  <title>Martin J.</title>
+  <title>Art by Martin Jambon</title>
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
 body {{
