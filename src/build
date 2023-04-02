@@ -690,6 +690,8 @@ def extract_series(series_rows: List[Dict[str, str]],
     artwork_groups: Dict[str, List[Dict[str,str]]] = {}
     for row in artwork_rows:
         key = row['series']
+        if not key:
+            key = 'other'
         if key:
             if key in artwork_groups:
                 artwork_groups[key].append(row)
