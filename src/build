@@ -724,7 +724,7 @@ def main() -> None:
     # All artworks
     os.makedirs('all', exist_ok=True)
     page_all = Page(
-        title='All Artworks',
+        title='All Artworks!',
         folder='all',
         html_file='all/index.html',
         page_specific_html='This is everything.',
