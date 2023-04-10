@@ -152,6 +152,21 @@ def get_img_page_url(row: Dict[str, str]) -> str:
     return f"{ART_PATH}/{row['artwork_id']}"
 
 
+def format_extra_credits(row: Dict[str, str]) -> str:
+    extra_credits_text = row['extra_credits']
+    if extra_credits_text:
+        license_name = row['license_name']
+        license_url = row['license_url']
+        return f"""
+<div>
+  {html.escape(extra_credits_text)}. Distributed under the terms of
+  <a href="{html.escape(license_url)}">{html.escape(license_name)}</a>
+</div>
+"""
+    else:
+        return ''
+
+
 # 2022-09-08 -> September 2022
 def reformat_date(isodate: str) -> str:
     date_ = date.fromisoformat(isodate)
@@ -193,6 +208,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
 <div style='font-size: 80%'>{html.escape(line)}</div>
 """
 
+    extra_credits = format_extra_credits(row)
     author_html = f"""
 <div class="main_caption">
   Martin Jambon, {date_str}
@@ -201,6 +217,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
         title="Instagram"
         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.5">
   </a>
+  {extra_credits}
 </div>
 """
 
@@ -331,12 +348,15 @@ def print_series_row(row: Dict[str, str],
 
     medium_img_url = IMG_PATH + '/medium/' + img_name
 
+    extra_credits = format_extra_credits(row)
+
     main_caption = f"{title}"
     # Fragile: pandoc really wants to insert <p> elements but we're trying
     # to avoid that. The backslash below disables the insertion of <p>.
     main_caption_html = f"""
 <div class="main_caption">
   {html.escape(main_caption)}
+  {extra_credits}
   <a href="#{html.escape(hash_name)}"
      title="Direct link to artwork"
      class="hash_link">#</a>\
