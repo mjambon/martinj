@@ -6,7 +6,7 @@
 
 from dataclasses import dataclass
 from datetime import date
-from typing import Any, Dict, List, Optional, TextIO, Tuple
+from typing import Any, Callable, Dict, List, Optional, TextIO, Tuple
 import argparse
 import csv
 import json
@@ -70,7 +70,8 @@ def image_dimensions(image_filename: str) -> Tuple[int, int]:
         '{"width":%[fx:w], "height":%[fx:h]}',
         image_filename
     ], capture_output=True)
-    dic = json.loads(p.stdout.decode())
+    out = p.stdout.decode()
+    dic = json.loads(out)
     return (dic['width'], dic['height'])
 
 def figure_scaling(image_filename: str) -> float:
@@ -527,6 +528,14 @@ def print_main_row(
     html_file.write(row_html)
 
 
+# Find the first element in a list that matches some condition
+def find(items: List[Any], cond: Callable[[Any], Any]) -> Any:
+    for item in items:
+        if cond(item):
+            return item
+    return None
+
+
 def generate_main(
         html_file: str,
         artwork_rows: List[Dict[str, str]],
@@ -641,7 +650,8 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 """
     )
 
-        latest_img_id = artwork_rows[0]['image_id']
+        latest_img_id = find(artwork_rows,
+                             lambda row: (row['show'] == '1'))['image_id']
         print_main_row(
             html_file=out,
             series_url=ALL_PATH,

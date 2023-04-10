@@ -1,4 +1,8 @@
 artwork_id,image_id,date,series,title_fr,title_en,title_lang,medium,support,width_cm,height_cm,width_in,height_in,tags,show,favorite,possessor,possessor_kind,notes
+mj-20230408-2,img-20230408-2,2023-04-08,ser-20220305,,,fr,acrylic marker on white paper,paper,,,12,9,,0,0,Martin Jambon,artist,
+mj-20230408-1,img-20230408-1,2023-04-08,ser-20220305,,,fr,acrylic marker on white paper,paper,,,12,9,,0,0,Martin Jambon,artist,
+mj-20230405,img-20230405,2023-04-05,ser-20220305,,,fr,acrylic marker on white paper,paper,29.7,21,,,,0,0,Martin Jambon,artist,
+mj-20230404,img-20230404,2023-04-04,ser-20220305,,,fr,acrylic marker on white paper,paper,29.7,21,,,,0,0,Martin Jambon,artist,
 mj-20230402,img-20230402,2023-04-02,,Primoblast,,fr,acrylic marker and paint on canvas,canvas,,,14,11,,1,0,Martin Jambon,artist,
 mj-20230326,img-20230326,2023-03-26,ser-20230111,Volymacore,,fr,acrylic marker and paint on wood panel,wood panel,,,28,22,,1,1,Martin Jambon,artist,
 mj-20230322,img-20230322,2023-03-22,ser-20230111,Almalomulex,,fr,acrylic marker and paint on wood panel,wood panel,,,14,11,,1,0,Martin Jambon,artist,
