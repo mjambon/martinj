@@ -113,10 +113,10 @@ def format_support(row: Dict[str, str]) -> Optional[str]:
         return None
 
 def format_location(row: Dict[str, str]) -> Optional[str]:
-    poss = row['possessor_kind']
-    if poss == 'private' or poss == 'family':
+    gk = row['guardian_kind']
+    if gk == 'private' or gk == 'family':
         return 'Private collection'
-    elif poss == 'ephemeral' or poss == 'recycled':
+    elif gk == 'ephemeral' or gk == 'recycled':
         return 'Ephemeral'
     else:
         return None
