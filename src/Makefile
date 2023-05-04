@@ -35,6 +35,7 @@ live:
 .PHONY: local
 local:
 	mkdir -p $(DOCROOT)
+	cp -u root/robots.txt $(DOCROOT)/
 	for dir in $(INDEX_DIRS); do \
 	  mkdir -p $(DOCROOT)/"$$dir"; \
 	  cp -u "$$dir"/index.html $(DOCROOT)/"$$dir"/; \
