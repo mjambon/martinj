@@ -1,5 +1,6 @@
 artwork_id,image_id,date,series,title_fr,title_en,title_lang,medium,support,width_cm,height_cm,width_in,height_in,tags,show,favorite,guardian,guardian_kind,notes,extra_credits,license_name,license_url,original_url
-mj-20230618,img-20230618,2023-06-18,,Jhinghothorp,,fr,"acrylic paint, acrylic marker, and brass leaf on canvas",canvas,,,36,24,,1,0,Martin Jambon,artist,,,,,
+mj-20230704,img-20230704,2023-07-04,,Frintistle,,fr,"acrylic paint, acrylic marker, and aluminum leaf on canvas",canvas,,,30,24,,1,0,Martin Jambon,artist,,,,,
+mj-20230618,img-20230618,2023-06-18,,Jhinghothorp,,fr,"acrylic paint, acrylic marker, and brass leaf on canvas",canvas,,,36,24,,1,1,Martin Jambon,artist,,,,,
 mj-20230603,img-20230603,2023-06-03,,Ikoplinf,,fr,acrylic marker and paint on canvas,canvas,,,24,18,,1,0,Martin Jambon,artist,,,,,
 mj-20230521,img-20230521,2023-05-21,,Flimestin,,fr,"acrylic paint, acrylic marker, and brass leaf on canvas",canvas,,,24,18,,1,0,Martin Jambon,artist,,,,,
 mj-20230509,img-20230509,2023-05-09,,Swalswot,,fr,acrylic marker and paint on canvas,canvas,,,24,18,,1,1,Martin Jambon,artist,,,,,
