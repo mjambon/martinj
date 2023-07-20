@@ -4,6 +4,7 @@ INDEX_DIRS = \
   . \
   all \
   series/* \
+  tag/* \
   art/*
 
 DOCROOT = ../docs
