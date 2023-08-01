@@ -524,7 +524,7 @@ figcaption {{
 
 
 # Print what represents a series on the main page.
-def print_main_row(
+def print_link_to_series(
         html_file: TextIO,
         series_url: str,
         img_id: str,
@@ -561,6 +561,21 @@ def find(items: List[Any], cond: Callable[[Any], Any]) -> Any:
         if cond(item):
             return item
     return None
+
+
+def count_items_in_series(artwork_rows:
+                          List[Dict[str, str]]) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for row in artwork_rows:
+        if 'series' in row:
+            series_id = row['series']
+            if series_id:
+                if series_id in counts:
+                    counts[series_id] = counts[series_id] + 1
+                else:
+                    counts[series_id] = 1
+    print(counts)
+    return counts
 
 
 def generate_main(
@@ -603,7 +618,7 @@ body, a, a:active, a:visited {{
      as the hexagon of the hexagonal grid. Rounding the corners of the
      square produces a circle that's perfectly packed and touches 6 neighbors.
 
-   See the prototype in misc/hexagons.html for a minimal example.
+   See the prototype in misc/hexagons.html for an uncluttered example.
 */
 .hexgrid-main {{
   display: flex;
@@ -699,39 +714,20 @@ body, a, a:active, a:visited {{
   overflow: clip;
 }}
 
-/*
-.contents {{
-  margin-top: 6ex;
-  flex-wrap: wrap;
-  line-height: 0;
-  text-align: center;
-}}
-*/
-
-/*
-.box {{
-  position: relative;
-  display: inline-block;
-  margin: 3ex;
-  border-radius: 50%; // ellipse
-  width: 17ex; // small enough for 2 images side-by-side on mobile
-  height: 17ex; // makes a square/circle
-  overflow: hidden;
-  text-align: left;
-}}
-*/
-
 .textbox {{
   color: white;
   font-size: 100%;
   font-weight: bold;
   line-height: normal;
 
-  /* center */
+  /* center within the cell */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  /* text justification */
+  text-align: center;
 
   /* show text over the image on mobile devices */
   z-index: 2;
@@ -770,18 +766,24 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 
         latest_img_id = find(artwork_rows,
                              lambda row: (row['show'] == '1'))['image_id']
-        print_main_row(
+        series_counts = count_items_in_series(artwork_rows)
+        print_link_to_series(
             html_file=out,
             series_url=ALL_PATH,
             img_id=latest_img_id,
-            title='Latest'
+            title="Latest"
         )
+        nbsp = " "  # nonbreaking space
         for row in series_rows:
             series_id = row['series_id']
             series_url = f'{SERIES_PATH}/{series_id}'
             img_id = row['image_id']
-            title = row['short_description_en']
-            print_main_row(
+            count = series_counts[series_id] \
+                if series_id in series_counts else 0
+            title = f"{row['short_description_en']}"
+            if count > 0:
+                title = f"{title} ({count}{nbsp}artworks)"
+            print_link_to_series(
                 html_file=out,
                 series_url=series_url,
                 img_id=img_id,
@@ -878,6 +880,9 @@ def main() -> None:
     artwork_rows = load_artworks_csv()
     series_rows = load_series_csv()
 
+    # Main page
+    generate_main('index.html', artwork_rows, series_rows, force=args.force)
+
     # All artworks
     os.makedirs('all', exist_ok=True)
     page_all = Page(
@@ -900,8 +905,5 @@ def main() -> None:
     tag_pages = extract_tags(VALID_TAGS, artwork_rows)
     for page in tag_pages:
         generate_series(page, generate_dependencies=False, force=args.force)
-
-    # Main page
-    generate_main('index.html', artwork_rows, series_rows, force=args.force)
 
 main()

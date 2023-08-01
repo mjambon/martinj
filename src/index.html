@@ -30,7 +30,7 @@ body, a, a:active, a:visited {
      as the hexagon of the hexagonal grid. Rounding the corners of the
      square produces a circle that's perfectly packed and touches 6 neighbors.
 
-   See the prototype in misc/hexagons.html for a minimal example.
+   See the prototype in misc/hexagons.html for an uncluttered example.
 */
 .hexgrid-main {
   display: flex;
@@ -126,39 +126,20 @@ body, a, a:active, a:visited {
   overflow: clip;
 }
 
-/*
-.contents {
-  margin-top: 6ex;
-  flex-wrap: wrap;
-  line-height: 0;
-  text-align: center;
-}
-*/
-
-/*
-.box {
-  position: relative;
-  display: inline-block;
-  margin: 3ex;
-  border-radius: 50%; // ellipse
-  width: 17ex; // small enough for 2 images side-by-side on mobile
-  height: 17ex; // makes a square/circle
-  overflow: hidden;
-  text-align: left;
-}
-*/
-
 .textbox {
   color: white;
   font-size: 100%;
   font-weight: bold;
   line-height: normal;
 
-  /* center */
+  /* center within the cell */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  /* text justification */
+  text-align: center;
 
   /* show text over the image on mobile devices */
   z-index: 2;
@@ -215,7 +196,7 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 <div class="hexgrid-cell">
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
-    <div class="textbox">Color on Wood</div>
+    <div class="textbox">Color on Wood (10 artworks)</div>
     <img class="artwork" src="/img/medium/img-20230122.jpg"/>
   </div>
 </div>
@@ -226,7 +207,7 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 <div class="hexgrid-cell">
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
-    <div class="textbox">Humanity</div>
+    <div class="textbox">Humanity (3 artworks)</div>
     <img class="artwork" src="/img/medium/img-20230108-4.jpg"/>
   </div>
 </div>
@@ -237,7 +218,7 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 <div class="hexgrid-cell">
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
-    <div class="textbox">Atmospheric Formations</div>
+    <div class="textbox">Atmospheric Formations (7 artworks)</div>
     <img class="artwork" src="/img/medium/img-20221221.jpg"/>
   </div>
 </div>
@@ -248,7 +229,7 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 <div class="hexgrid-cell">
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
-    <div class="textbox">Millet’s Countryside</div>
+    <div class="textbox">Millet’s Countryside (27 artworks)</div>
     <img class="artwork" src="/img/medium/img-20221125-21.jpg"/>
   </div>
 </div>
@@ -259,7 +240,7 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 <div class="hexgrid-cell">
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
-    <div class="textbox">Monochromes</div>
+    <div class="textbox">Monochromes (9 artworks)</div>
     <img class="artwork" src="/img/medium/img-20220409.jpg"/>
   </div>
 </div>
@@ -270,7 +251,7 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 <div class="hexgrid-cell">
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
-    <div class="textbox">Polychromes</div>
+    <div class="textbox">Polychromes (39 artworks)</div>
     <img class="artwork" src="/img/medium/img-20220801-2.jpg"/>
   </div>
 </div>
@@ -281,7 +262,7 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 <div class="hexgrid-cell">
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
-    <div class="textbox">Multilayer</div>
+    <div class="textbox">Multilayer (4 artworks)</div>
     <img class="artwork" src="/img/medium/img-20220313.jpg"/>
   </div>
 </div>
@@ -292,7 +273,7 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 <div class="hexgrid-cell">
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
-    <div class="textbox">Full Space</div>
+    <div class="textbox">Full Space (6 artworks)</div>
     <img class="artwork" src="/img/medium/img-20220131.jpg"/>
   </div>
 </div>
