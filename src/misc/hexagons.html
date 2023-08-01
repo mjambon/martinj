@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+.main {
+  display:flex;
+  /* Hexagon dimensions */
+  --hex-side: 100px;
+  --hex-min-dim: calc(1.732 * var(--hex-side)); /* width */
+  --hex-max-dim: calc(2 * var(--hex-side)); /* height */
+  /* Vertical offset from one cell to the next */
+  --period: calc(1.5 * var(--hex-side));
+  /* Top and bottom padding that makes each cell a square that fits a
+     circle rather than the rectangle that fits a hexagon. */
+  --square-padding: calc(0.5 * (var(--hex-max-dim) - var(--hex-min-dim)));
+}
+
+.container {
+  font-size: 0; /* disable white space between inline block elements */
+}
+
+.cell {
+  width: var(--hex-min-dim);
+  height: calc(var(--hex-max-dim) - 2 * var(--square-padding));
+  display: inline-block;
+  font-size: initial;
+  /* background: #f008; */
+
+  margin-bottom: calc(-0.5 * var(--hex-side));
+  padding: var(--square-padding) 0; /* top and bottom padding */
+}
+
+.container div:nth-child(odd) {
+  /* background: #0f08; */
+}
+
+.container::before {
+  content: "";
+  width: calc(0.5 * var(--hex-min-dim));
+  float: left;
+  height: 120%;
+  shape-outside:
+    repeating-linear-gradient(
+      transparent 0 calc(1.8 * var(--period)),
+      black calc(1.8 * var(--period)) calc(1.9 * var(--period)),
+      transparent calc(1.9 * var(--period)) calc(2 * var(--period)));
+}
+
+.circle {
+  background-color: blue;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="container">
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="circle"></div></div>
+  </div>
+</div>
+</body>
+</html>
