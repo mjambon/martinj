@@ -24,6 +24,14 @@ ART_PATH = '/art'
 
 VALID_TAGS = { 'for-rent' }
 
+NAVBAR_HTML = """
+<div class="navbar">
+  <a href="/">Paintings</a>
+  <a href="/#about">About</a>
+  <a href="/#contact">Contact</a>
+</div>
+"""
+
 @dataclass
 class Page:
     title: str
@@ -35,6 +43,7 @@ class Page:
     page_specific_html: str
     # CSV rows of artworks to display
     rows: List[Dict[str, str]]
+
 
 # The built-in '.capitalize()' method will downcase the rest of the string,
 # which we don't want.
@@ -279,6 +288,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
   </style>
 </head>
 <body>
+{NAVBAR_HTML}
   <div class="center">
     <img class="artwork" src="{img_url}"/>
     <div class="caption">
@@ -431,14 +441,6 @@ def generate_series(
   <title>{html.escape(page.title)}</title>
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
-/*
-   Hide the site-wide navigation bar to avoid confusing the user
-   who only cares about the art stuff.
-*/
-.navbar {{
-  display: none;
-}}
-
 /* Override site-wide style */
 body {{
   font-family: sans-serif;
@@ -498,9 +500,7 @@ figcaption {{
   </style>
 </head>
 <body>
-<p style="text-align:right; font-family: monospace; font-size: 130%">
-  by <a href="/">Martin J.</a>
-</p>
+{NAVBAR_HTML}
 <h1>{html.escape(page.title)}</h1>
 <div class="artworks">
 """
@@ -754,11 +754,12 @@ img.artwork {{
   transform: translate(-50%, -50%);
 }}
 </style>
+{NAVBAR_HTML}
 <h1>Hello.</h1>
-<p>
+<p><a name="about"></a>
 I am Martin Jambon. This is the online collection of all my artworks.
 </p>
-<p>
+<p><a name="contact"></a>
 Follow me on <a href="https://www.instagram.com/martinjambon">Instagram</a>
 or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 </p>

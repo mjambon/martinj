@@ -35,3 +35,13 @@ h5 a, h5 a:active, h5 a:visited
   color: #999;
   text-decoration: none;
 }
+
+.navbar {
+  display: block;
+  text-align: right;
+  font-family: monospace;
+  font-size: 130%;
+}
+
+.navbar a {
+}
