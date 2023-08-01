@@ -2,10 +2,23 @@
 <html>
 <head>
 <style type="text/css">
+/* Hexagonal grid.
+
+   The hexagonal grid uses the following levels of containers:
+   - main: root container, sets display=flex
+   - container: the actual container of cells
+   - container::before: invisible pseudo-element to which we give a shape
+     that forces an indentation of a half cell every other row.
+   - cell: a rectangular container that can fit a hexagon with the pointy
+     ends at the top and bottom.
+   - square: a square container that can fit a circle with the same center
+     as the hexagon of the hexagonal grid. Rounding the corners of the
+     square produces a circle that's perfectly packed and touches 6 neighbors.
+*/
 .main {
-  display:flex;
+  display: flex;
   /* Hexagon dimensions */
-  --hex-side: 100px;
+  --hex-side: 150px;
   --hex-min-dim: calc(1.732 * var(--hex-side)); /* width */
   --hex-max-dim: calc(2 * var(--hex-side)); /* height */
   /* Vertical offset from one cell to the next */
@@ -17,17 +30,6 @@
 
 .container {
   font-size: 0; /* disable white space between inline block elements */
-}
-
-.cell {
-  width: var(--hex-min-dim);
-  height: calc(var(--hex-max-dim) - 2 * var(--square-padding));
-  display: inline-block;
-  font-size: initial;
-  /* background: #f008; */
-
-  margin-bottom: calc(-0.5 * var(--hex-side));
-  padding: var(--square-padding) 0; /* top and bottom padding */
 }
 
 .container div:nth-child(odd) {
@@ -46,7 +48,18 @@
       transparent calc(1.9 * var(--period)) calc(2 * var(--period)));
 }
 
-.circle {
+.cell {
+  width: var(--hex-min-dim);
+  height: calc(var(--hex-max-dim) - 2 * var(--square-padding));
+  display: inline-block;
+  font-size: initial;
+  /* background: #f008; */
+
+  margin-bottom: calc(-0.5 * var(--hex-side));
+  padding: var(--square-padding) 0; /* top and bottom padding */
+}
+
+.square {
   background-color: blue;
   border-radius: 50%;
   width: 100%;
@@ -57,44 +70,44 @@
 <body>
 <div class="main">
   <div class="container">
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
-    <div class="cell"><div class="circle"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
+    <div class="cell"><div class="square"></div></div>
   </div>
 </div>
 </body>

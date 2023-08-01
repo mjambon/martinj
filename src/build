@@ -539,15 +539,17 @@ def print_main_row(
     fig_margin = int((1.0 - figure_scaling(medium)) / 2 * 100)
 
     # no whitespace between inline blocks to avoid undesirable spacing
-    row_html = f"""\
+    row_html = f"""
 <a href="{html.escape(series_url)}"
-   class="series_link">\
-<div class="box">
-  <div class="shadowbox"></div>
-  <div class="textbox">{html.escape(title)}</div>
-  <img class="artwork" src="{html.escape(img_url)}"/>
-</div>\
-</a>\
+   class="series_link">
+<div class="hexgrid-cell">
+  <div class="hexgrid-square">
+    <div class="shadowbox"></div>
+    <div class="textbox">{html.escape(title)}</div>
+    <img class="artwork" src="{html.escape(img_url)}"/>
+  </div>
+</div>
+</a>
 """
     # Write to main page
     html_file.write(row_html)
@@ -588,10 +590,36 @@ body, a, a:active, a:visited {{
   color: #999;
 }}
 
+/* Hexagonal grid.
+
+   The hexagonal grid uses the following levels of containers:
+   - main: root container, sets display=flex
+   - container: the actual container of cells
+   - container::before: invisible pseudo-element to which we give a shape
+     that forces an indentation of a half cell every other row.
+   - cell: a rectangular container that can fit a hexagon with the pointy
+     ends at the top and bottom.
+   - square: a square container that can fit a circle with the same center
+     as the hexagon of the hexagonal grid. Rounding the corners of the
+     square produces a circle that's perfectly packed and touches 6 neighbors.
+
+   See the prototype in misc/hexagons.html for a minimal example.
+*/
+.hexgrid-main {{
+  display: flex;
+  /* Hexagon dimensions */
+  --hex-side: 120px;
+  --hex-min-dim: calc(1.732 * var(--hex-side)); /* width */
+  --hex-max-dim: calc(2 * var(--hex-side)); /* height */
+  /* Vertical offset from one cell to the next */
+  --period: calc(1.5 * var(--hex-side));
+  /* Top and bottom padding that makes each cell a square that fits a
+     circle rather than the rectangle that fits a hexagon. */
+  --square-padding: calc(0.5 * (var(--hex-max-dim) - var(--hex-min-dim)));
+}}
+
 @media (hover: hover) {{
   .shadowbox {{
-    position: absolute;
-
     /* fade in and out */
     visibility: hidden;
     opacity: 0;
@@ -599,42 +627,99 @@ body, a, a:active, a:visited {{
 
     width: 100%;
     height: 100%;
+    border-radius: 50%;
+
+    /* position:relative is needed for z-index to take effect */
+    position: relative;
     z-index: 1;
+
     background-color: rgba(0, 0, 0, 0.4);
   }}
 
-  .box:hover .shadowbox {{
+  .hexgrid-square:hover .shadowbox {{
     visibility: visible;
     opacity: 1;
   }}
 
   .textbox {{
-    /* fade in and out */
-    opacity: 0.8;
+    /* Fade in and out. The text is invisible (fully transparent) on desktop */
+    opacity: 0;
     transition: 0.3s;
   }}
 
-  .box:hover .textbox {{
+  .hexgrid-square:hover .textbox {{
     opacity: 1;
   }}
 }}
 
+.hexgrid-container {{
+  font-size: 0; /* disable whitespace between inline block elements */
+}}
+
+/* for debugging */
+.hexgrid-container div:nth-child(odd) {{
+  /* background: #0f08; */
+}}
+
+.hexgrid-container::before {{
+  content: "";
+  width: calc(0.5 * var(--hex-min-dim));
+  float: left;
+  height: 120%;
+  shape-outside:
+    repeating-linear-gradient(
+      transparent 0 calc(1.8 * var(--period)),
+      black calc(1.8 * var(--period)) calc(1.9 * var(--period)),
+      transparent calc(1.9 * var(--period)) calc(2 * var(--period)));
+}}
+
+/* rectangular grid cell suitable to fit a hexagon */
+.hexgrid-cell {{
+  width: var(--hex-min-dim);
+  height: calc(var(--hex-max-dim) - 2 * var(--square-padding));
+  display: inline-block;
+  font-size: initial;
+  /* background: #f008; */
+
+  margin-bottom: calc(-0.5 * var(--hex-side));
+  padding: var(--square-padding) 0; /* top and bottom padding */
+}}
+
+/* square container suitable to fit a circle */
+.hexgrid-square {{
+  /* background-color: blue; */
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+
+  /* Allow text centering relative to this element in descendant elements */
+  position: relative;
+
+  /* Hide the corner of images */
+  overflow: clip;
+}}
+
+/*
 .contents {{
   margin-top: 6ex;
   flex-wrap: wrap;
   line-height: 0;
   text-align: center;
 }}
+*/
 
+/*
 .box {{
   position: relative;
   display: inline-block;
-  margin: 0.2ex;
-  width: 17ex; /* small enough for 2 images side-by-side on mobile */
-  height: 17ex; /* makes a square */
+  margin: 3ex;
+  border-radius: 50%; // ellipse
+  width: 17ex; // small enough for 2 images side-by-side on mobile
+  height: 17ex; // makes a square/circle
   overflow: hidden;
   text-align: left;
 }}
+*/
 
 .textbox {{
   color: white;
@@ -657,11 +742,16 @@ body, a, a:active, a:visited {{
 }}
 
 img.artwork {{
-  position: relative;
+  position: absolute;
   height: 100%;
   width: 100%;
   object-fit: cover;
   transform: scale(1.6);
+
+  /* center */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }}
 </style>
 <h1>Hello.</h1>
@@ -672,7 +762,8 @@ I am Martin Jambon. This is the online collection of all my artworks.
 Follow me on <a href="https://www.instagram.com/martinjambon">Instagram</a>
 or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 </p>
-<div class="contents">
+<div class="hexgrid-main">
+<div class="hexgrid-container">
 """
     )
 
@@ -695,13 +786,9 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
                 img_id=img_id,
                 title=title
             )
-        # Hack: fillers that allow the images in the last visible row to
-        # be left-aligned rather than centered.
-        for i in range(3):
-            out.write('<div class="box" style="height:0"></div>')
-
         out.write(
         """
+</div>
 </div>
 """
         )
