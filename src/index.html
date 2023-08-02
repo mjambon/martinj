@@ -34,15 +34,21 @@ body, a, a:active, a:visited {
 */
 .hexgrid-main {
   display: flex;
+
   /* Hexagon dimensions */
   --hex-side: 120px;
   --hex-min-dim: calc(1.732 * var(--hex-side)); /* width */
   --hex-max-dim: calc(2 * var(--hex-side)); /* height */
+
   /* Vertical offset from one cell to the next */
   --period: calc(1.5 * var(--hex-side));
+
   /* Top and bottom padding that makes each cell a square that fits a
      circle rather than the rectangle that fits a hexagon. */
   --square-padding: calc(0.5 * (var(--hex-max-dim) - var(--hex-min-dim)));
+
+  /* How much the disks should fill the available space */
+  --disk-space-fill: 95%;
 }
 
 @media (hover: hover) {
@@ -52,13 +58,19 @@ body, a, a:active, a:visited {
     opacity: 0;
     transition: 0.3s;
 
-    width: 100%;
-    height: 100%;
+    width: var(--disk-space-fill);
+    height: var(--disk-space-fill);
     border-radius: 50%;
 
-    /* position:relative is needed for z-index to take effect */
-    position: relative;
+    /* position:relative or position:absolute is needed for z-index
+       to take effect */
     z-index: 2;
+
+    /* center it */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     background-color: rgba(0, 0, 0, 0.4);
   }
@@ -136,8 +148,8 @@ body, a, a:active, a:visited {
 */
 .outer-disk {
   border-radius: 50%;
-  width: 95%;
-  height: 95%;
+  width: var(--disk-space-fill);
+  height: var(--disk-space-fill);
   background-color: teal; /* sample value, customized later */
 
   /* center it */
