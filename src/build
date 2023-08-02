@@ -320,6 +320,7 @@ def print_series_row(row: Dict[str, str],
     hash_name = img_id
 
     medium = 'img/medium/' + img_name
+    small = 'img/small/' + img_name
     if generate_dependencies:
         make_standalone_page(row)
 
@@ -337,7 +338,12 @@ def print_series_row(row: Dict[str, str],
         if force or needs_rebuild(orig, medium):
             verbose_command(["convert", "-resize", "800x800",
                              "-quality", quality,
-                             orig, medium])
+                             large, medium])
+
+        if force or needs_rebuild(orig, small):
+            verbose_command(["convert", "-resize", "400x400",
+                             "-quality", quality,
+                             medium, small])
 
         # Padded square images for Instagram
         square = 'img/square/' + img_name
@@ -356,7 +362,7 @@ def print_series_row(row: Dict[str, str],
     # This resizes the image on the page so that all images have the same
     # surface area. (except for those which are too wide, which will be
     # rendered with a smaller surface area)
-    fig_margin = int((1.0 - figure_scaling(medium)) / 2 * 100)
+    fig_margin = int((1.0 - figure_scaling(small)) / 2 * 100)
 
     medium_img_url = IMG_PATH + '/medium/' + img_name
 
@@ -532,13 +538,7 @@ def print_link_to_series(
         ring_color: str,
         ring_thickness: str) -> None:
     img_name = f'{img_id}.jpg'
-    img_url = f'{IMG_PATH}/medium/{img_name}'
-
-    medium = f'img/medium/{img_name}'
-    # This resizes the image on the page so that all images have the same
-    # surface area. (except for those which are too wide, which will be
-    # rendered with a smaller surface area)
-    fig_margin = int((1.0 - figure_scaling(medium)) / 2 * 100)
+    img_url = f'{IMG_PATH}/small/{img_name}'
 
     # no whitespace between inline blocks to avoid undesirable spacing
     row_html = f"""
@@ -819,7 +819,7 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
             series_url=ALL_PATH,
             img_id=latest_img_id,
             title="Latest",
-            ring_color="midnightblue",
+            ring_color="gray",
             ring_thickness="20%"
         )
         nbsp = " "  # nonbreaking space
@@ -929,6 +929,7 @@ def main() -> None:
 
     os.makedirs('img/large', exist_ok=True)
     os.makedirs('img/medium', exist_ok=True)
+    os.makedirs('img/small', exist_ok=True)
 
     artwork_rows = load_artworks_csv()
     series_rows = load_series_csv()
