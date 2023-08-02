@@ -9,7 +9,11 @@ body {
   color: #999;
 }
 
-.discreet, .discreet a, .discreet a:active, .discreet a:visited {
+.bureaucratic,
+.bureaucratic a,
+.bureaucratic a:active,
+.bureaucratic a:visited {
+  font-family: monospace;
   color: #999;
 }
 
