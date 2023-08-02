@@ -92,7 +92,15 @@ body, a, a:active, a:visited {
 }
 
 .hexgrid-container {
-  font-size: 0; /* disable whitespace between inline block elements */
+  /* Disable whitespace between inline block elements */
+  font-size: 0;
+
+  /*
+     The bottom end of the container sometimes doesn't go far enough.
+     No idea what's going on. Adding a big margin sort of works
+     around the problem.
+  */
+  margin-bottom: calc(1 * var(--hex-max-dim));
 }
 
 /* for debugging */
@@ -224,12 +232,9 @@ img.artwork {
 </div>
 
 <h1>Hello.</h1>
-<p><a name="about"></a>
-I am Martin Jambon. This is the online collection of all my artworks.
-</p>
-<p><a name="contact"></a>
-Follow me on <a href="https://www.instagram.com/martinjambon">Instagram</a>
-or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
+<p>
+I am Martin Jambon. This is the online collection of all my artworks
+since 2022, mostly paintings.
 </p>
 <div class="hexgrid-main">
 <div class="hexgrid-container">
@@ -390,3 +395,27 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
 
 </div>
 </div>
+<!-- This page fragment is inserted after the preview of paintings -->
+
+<div>
+  <img src="/img/other/mjambon-home-2023-no-background.png"
+       style="float:right; max-width: 25%" />
+</div>
+
+<h2><a name="about"></a>Biography</h2>
+
+<p>
+I'm a French painter, programmer, and scientist living in Palo
+Alto, California. Born in Orléans in 1977, I studied biology and
+computer science before moving to California in 2004. My art career
+started accidentally in 2022 after I turned my old kitchen table into a
+permanent art workstation.
+</p>
+
+<h2><a name="contact"></a>Contact Information</h2>
+
+Follow me or message me
+on <a href="https://www.instagram.com/martinjambon">Instagram</a> or
+email me directly
+at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
+

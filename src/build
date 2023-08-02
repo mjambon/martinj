@@ -32,6 +32,14 @@ NAVBAR_HTML = """
 </div>
 """
 
+
+def read_file(filename: str) -> str:
+    res = ""
+    with open(filename, "r") as file:
+        res = file.read()
+    return res
+
+
 @dataclass
 class Page:
     title: str
@@ -685,7 +693,15 @@ body, a, a:active, a:visited {{
 }}
 
 .hexgrid-container {{
-  font-size: 0; /* disable whitespace between inline block elements */
+  /* Disable whitespace between inline block elements */
+  font-size: 0;
+
+  /*
+     The bottom end of the container sometimes doesn't go far enough.
+     No idea what's going on. Adding a big margin sort of works
+     around the problem.
+  */
+  margin-bottom: calc(1 * var(--hex-max-dim));
 }}
 
 /* for debugging */
@@ -811,12 +827,9 @@ img.artwork {{
 </style>
 {NAVBAR_HTML}
 <h1>Hello.</h1>
-<p><a name="about"></a>
-I am Martin Jambon. This is the online collection of all my artworks.
-</p>
-<p><a name="contact"></a>
-Follow me on <a href="https://www.instagram.com/martinjambon">Instagram</a>
-or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
+<p>
+I am Martin Jambon. This is the online collection of all my artworks
+since 2022, mostly paintings.
 </p>
 <div class="hexgrid-main">
 <div class="hexgrid-container">
@@ -855,9 +868,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
                 ring_thickness=ring_thickness
             )
         out.write(
-        """
+        f"""
 </div>
 </div>
+{read_file("main-page-text.html")}
 """
         )
 
