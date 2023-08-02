@@ -58,7 +58,7 @@ body, a, a:active, a:visited {
 
     /* position:relative is needed for z-index to take effect */
     position: relative;
-    z-index: 1;
+    z-index: 2;
 
     background-color: rgba(0, 0, 0, 0.4);
   }
@@ -126,6 +126,45 @@ body, a, a:active, a:visited {
   overflow: clip;
 }
 
+/*
+   A decorative ring behind the image:
+   - outer-disk: color disk placed behind the inner disk
+   - inner-disk: smaller disk containing the image
+
+   The actual color and thickness of each ring is adjusted with
+   inline style instructions.
+*/
+.outer-disk {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: teal; /* sample value, customized later */
+
+  /* center it */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* place it behind the image */
+  z-index: -1;
+}
+
+.inner-disk {
+  --ring-thickness: 20%; /* sample value, customized later */
+  border-radius: 50%;
+  width: calc(100% - var(--ring-thickness));
+  height: calc(100% - var(--ring-thickness));
+
+  /* center it */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  overflow: clip;
+}
+
 .textbox {
   color: white;
   font-size: 100%;
@@ -142,7 +181,7 @@ body, a, a:active, a:visited {
   text-align: center;
 
   /* show text over the image on mobile devices */
-  z-index: 2;
+  z-index: 3;
 }
 
 .series_link, .series_link:hover {
@@ -160,6 +199,9 @@ img.artwork {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  /* Clip anything outside of the image's container */
+  overflow: clip;
 }
 </style>
 
@@ -186,7 +228,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Latest</div>
-    <img class="artwork" src="/img/medium/img-20230717.jpg"/>
+    <div class="outer-disk" style="background-color:midnightblue"></div>
+    <div class="inner-disk" style="--ring-thickness:20%">
+      <img class="artwork" src="/img/medium/img-20230717.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -197,7 +242,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Color on Canvas (12 artworks)</div>
-    <img class="artwork" src="/img/medium/img-20230416.jpg"/>
+    <div class="outer-disk" style="background-color:mistyrose"></div>
+    <div class="inner-disk" style="--ring-thickness:25.00%">
+      <img class="artwork" src="/img/medium/img-20230416.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -208,7 +256,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Color on Wood (10 artworks)</div>
-    <img class="artwork" src="/img/medium/img-20230122.jpg"/>
+    <div class="outer-disk" style="background-color:darkmagenta"></div>
+    <div class="inner-disk" style="--ring-thickness:40.00%">
+      <img class="artwork" src="/img/medium/img-20230122.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -219,7 +270,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Humanity (3 artworks)</div>
-    <img class="artwork" src="/img/medium/img-20230108-4.jpg"/>
+    <div class="outer-disk" style="background-color:mediumaquamarine"></div>
+    <div class="inner-disk" style="--ring-thickness:20.00%">
+      <img class="artwork" src="/img/medium/img-20230108-4.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -230,7 +284,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Atmospheric Formations (7 artworks)</div>
-    <img class="artwork" src="/img/medium/img-20221221.jpg"/>
+    <div class="outer-disk" style="background-color:gold"></div>
+    <div class="inner-disk" style="--ring-thickness:50.00%">
+      <img class="artwork" src="/img/medium/img-20221221.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -241,7 +298,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Millet’s Countryside (27 artworks)</div>
-    <img class="artwork" src="/img/medium/img-20221125-21.jpg"/>
+    <div class="outer-disk" style="background-color:sienna"></div>
+    <div class="inner-disk" style="--ring-thickness:20.00%">
+      <img class="artwork" src="/img/medium/img-20221125-21.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -252,7 +312,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Monochromes (9 artworks)</div>
-    <img class="artwork" src="/img/medium/img-20220409.jpg"/>
+    <div class="outer-disk" style="background-color:cornsilk"></div>
+    <div class="inner-disk" style="--ring-thickness:30.00%">
+      <img class="artwork" src="/img/medium/img-20220409.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -263,7 +326,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Polychromes (39 artworks)</div>
-    <img class="artwork" src="/img/medium/img-20220801-2.jpg"/>
+    <div class="outer-disk" style="background-color:salmon"></div>
+    <div class="inner-disk" style="--ring-thickness:25.00%">
+      <img class="artwork" src="/img/medium/img-20220803-1.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -274,7 +340,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Multilayer (4 artworks)</div>
-    <img class="artwork" src="/img/medium/img-20220313.jpg"/>
+    <div class="outer-disk" style="background-color:palegreen"></div>
+    <div class="inner-disk" style="--ring-thickness:40.00%">
+      <img class="artwork" src="/img/medium/img-20220313.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -285,7 +354,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Full Space (6 artworks)</div>
-    <img class="artwork" src="/img/medium/img-20220131.jpg"/>
+    <div class="outer-disk" style="background-color:tomato"></div>
+    <div class="inner-disk" style="--ring-thickness:55.00%">
+      <img class="artwork" src="/img/medium/img-20220131.jpg"/>
+    </div>
   </div>
 </div>
 </a>
@@ -296,7 +368,10 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">Unclassified</div>
-    <img class="artwork" src="/img/medium/img-20220821.jpg"/>
+    <div class="outer-disk" style="background-color:cornflowerblue"></div>
+    <div class="inner-disk" style="--ring-thickness:30.00%">
+      <img class="artwork" src="/img/medium/img-20220821.jpg"/>
+    </div>
   </div>
 </div>
 </a>

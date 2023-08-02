@@ -528,7 +528,9 @@ def print_link_to_series(
         html_file: TextIO,
         series_url: str,
         img_id: str,
-        title: str) -> None:
+        title: str,
+        ring_color: str,
+        ring_thickness: str) -> None:
     img_name = f'{img_id}.jpg'
     img_url = f'{IMG_PATH}/medium/{img_name}'
 
@@ -546,7 +548,10 @@ def print_link_to_series(
   <div class="hexgrid-square">
     <div class="shadowbox"></div>
     <div class="textbox">{html.escape(title)}</div>
-    <img class="artwork" src="{html.escape(img_url)}"/>
+    <div class="outer-disk" style="background-color:{ring_color}"></div>
+    <div class="inner-disk" style="--ring-thickness:{ring_thickness}">
+      <img class="artwork" src="{html.escape(img_url)}"/>
+    </div>
   </div>
 </div>
 </a>
@@ -646,7 +651,7 @@ body, a, a:active, a:visited {{
 
     /* position:relative is needed for z-index to take effect */
     position: relative;
-    z-index: 1;
+    z-index: 2;
 
     background-color: rgba(0, 0, 0, 0.4);
   }}
@@ -714,6 +719,45 @@ body, a, a:active, a:visited {{
   overflow: clip;
 }}
 
+/*
+   A decorative ring behind the image:
+   - outer-disk: color disk placed behind the inner disk
+   - inner-disk: smaller disk containing the image
+
+   The actual color and thickness of each ring is adjusted with
+   inline style instructions.
+*/
+.outer-disk {{
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: teal; /* sample value, customized later */
+
+  /* center it */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* place it behind the image */
+  z-index: -1;
+}}
+
+.inner-disk {{
+  --ring-thickness: 20%; /* sample value, customized later */
+  border-radius: 50%;
+  width: calc(100% - var(--ring-thickness));
+  height: calc(100% - var(--ring-thickness));
+
+  /* center it */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  overflow: clip;
+}}
+
 .textbox {{
   color: white;
   font-size: 100%;
@@ -730,7 +774,7 @@ body, a, a:active, a:visited {{
   text-align: center;
 
   /* show text over the image on mobile devices */
-  z-index: 2;
+  z-index: 3;
 }}
 
 .series_link, .series_link:hover {{
@@ -748,6 +792,9 @@ img.artwork {{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  /* Clip anything outside of the image's container */
+  overflow: clip;
 }}
 </style>
 {NAVBAR_HTML}
@@ -771,7 +818,9 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
             html_file=out,
             series_url=ALL_PATH,
             img_id=latest_img_id,
-            title="Latest"
+            title="Latest",
+            ring_color="midnightblue",
+            ring_thickness="20%"
         )
         nbsp = " "  # nonbreaking space
         for row in series_rows:
@@ -783,11 +832,15 @@ or email me at <a href="mailto:contact@martinj.art">contact@martinj.art</a>.
             title = f"{row['short_description_en']}"
             if count > 0:
                 title = f"{title} ({count}{nbsp}artworks)"
+            ring_color=row['ring_color']
+            ring_thickness=row['ring_thickness']
             print_link_to_series(
                 html_file=out,
                 series_url=series_url,
                 img_id=img_id,
-                title=title
+                title=title,
+                ring_color=ring_color,
+                ring_thickness=ring_thickness
             )
         out.write(
         """
