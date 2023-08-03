@@ -40,6 +40,16 @@ h5 a, h5 a:active, h5 a:visited
   text-decoration: none;
 }
 
+h2 {
+  margin-top: 3em;
+  margin-bottom: 0.83em;
+}
+
+h3 {
+  margin-top: 3em;
+  margin-bottom: 0.83em;
+}
+
 .navbar {
   display: block;
   text-align: right;
