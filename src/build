@@ -689,6 +689,7 @@ body, a, a:active, a:visited {{
 
   .hexgrid-square:hover .textbox {{
     opacity: 1;
+    background-color: #0000; /* transparent */
   }}
 }}
 
@@ -791,6 +792,11 @@ body, a, a:active, a:visited {{
   font-size: 100%;
   font-weight: bold;
   line-height: normal;
+
+  /* add a background for better readability (mobile) */
+  background-color: #8888;
+  padding: 0.2em;
+  border-radius: 1em;
 
   /* center within the cell */
   position: absolute;
