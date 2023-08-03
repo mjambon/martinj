@@ -43,6 +43,9 @@ def read_file(filename: str) -> str:
 @dataclass
 class Page:
     title: str
+    # HTML-formatted introduction that will be placed under the <h1>
+    # containing the title.
+    description_html: str
     # Folder containing the md and html files
     folder: str
     # Output file
@@ -516,6 +519,7 @@ figcaption {{
 <body>
 {NAVBAR_HTML}
 <h1>{html.escape(page.title)}</h1>
+{page.description_html}
 <div class="artworks">
 """
     )
@@ -909,10 +913,13 @@ def extract_series(series_rows: List[Dict[str, str]],
             else:
                 artwork_groups[key] = [row]
     def create_page(series_id: str, rows: List[Dict[str,str]]) -> Page:
-        title = series_tbl[series_id]['short_description_en'];
+        row = series_tbl[series_id]
+        title = row['short_description_en']
+        description_html = row['description_html']
         os.makedirs(f'series/{series_id}', exist_ok=True)
         return Page(
             title=title,
+            description_html=description_html,
             folder=f'series/{series_id}',
             html_file=f'series/{series_id}/index.html',
             page_specific_html='',
@@ -944,6 +951,7 @@ def extract_tags(valid_tags: Set[str],
         os.makedirs(f'tag/{tag}', exist_ok=True)
         return Page(
             title=title,
+            description_html=f'',
             folder=f'tag/{tag}',
             html_file=f'tag/{tag}/index.html',
             page_specific_html='',
@@ -973,6 +981,9 @@ def main() -> None:
     os.makedirs('all', exist_ok=True)
     page_all = Page(
         title='All Artworks!',
+        description_html=(
+            "<p>This is the full gallery in reverse chronological order.</p>"
+        ),
         folder='all',
         html_file='all/index.html',
         page_specific_html='This is everything.',
