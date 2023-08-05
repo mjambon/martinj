@@ -865,6 +865,9 @@ since 2022, mostly paintings.
             count = series_counts[series_id] \
                 if series_id in series_counts else 0
             title = f"{row['short_description_en']}"
+            date_text = row['date_text']
+            if date_text:
+                title = f"{title} {html.escape(date_text)}"
             if count > 0:
                 title = f"{title} ({count}{nbsp}artworks)"
             ring_color=row['ring_color']
