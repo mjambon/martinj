@@ -6,6 +6,7 @@
 
 from dataclasses import dataclass
 from datetime import date
+from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Set, TextIO, Tuple
 import argparse
 import csv
@@ -29,15 +30,60 @@ NAVBAR_HTML = """
   <a href="/">Paintings</a>
   <a href="/#about">About</a>
   <a href="/#contact">Contact</a>
+  <a href="/meta">Meta</a>
 </div>
 """
 
-
-def read_file(filename: str) -> str:
+def read_file(filename: Path) -> str:
     res = ""
     with open(filename, "r") as file:
         res = file.read()
     return res
+
+
+@dataclass
+class GenericPage:
+    title_text: str
+    body_html_file: Path
+    html_file: Path
+
+
+GENERIC_PAGES: List[GenericPage] = [
+    GenericPage(title_text="Meta Gallery",
+                body_html_file=Path("meta.html"),
+                html_file=Path("meta/index.html"))
+]
+
+
+def make_generic_page(page: GenericPage) -> None:
+    """ Create an HTML page using the generic template.
+
+    Use this for any plain HTML page that doesn't need automation other
+    that sharing the site's generic layout.
+    """
+    print(f"Creating {page.html_file}")
+    body_html = read_file(page.body_html_file)
+    html_dir = page.html_file.parent
+    os.makedirs(html_dir, exist_ok=True)
+    page_contents = f"""
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>{html.escape(page.title_text)}</title>
+  <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
+</head>
+<body>
+{NAVBAR_HTML}
+<div class="center">
+{body_html}
+</div>
+</body>
+</html>
+"""
+    with open(page.html_file, "w") as out:
+        out.write(page_contents)
 
 
 @dataclass
@@ -258,11 +304,6 @@ def make_standalone_page(row: Dict[str, str]) -> None:
   <title>{html.escape(title)}</title>
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
-    body {{
-      background-color: white;
-      font-family: sans-serif;
-    }}
-
     div.center {{
       max-width: 80%;
       max-height: 60%;
@@ -461,11 +502,6 @@ def generate_series(
 /* Override site-wide style */
 body {{
   font-family: sans-serif;
-}}
-
-/* Override text color for text and links */
-body, a, a:active, a:visited {{
-  color: #999;
 }}
 
 /* Disable zoom-in on hover on touchscreens */
@@ -884,7 +920,7 @@ since 2022, mostly paintings.
         f"""
 </div>
 </div>
-{read_file("main-page-text.html")}
+{read_file(Path("main-page-text.html"))}
 """
         )
 
@@ -964,6 +1000,11 @@ def extract_tags(valid_tags: Set[str],
              for tag, rows in artwork_groups.items() ]
 
 
+def make_generic_pages() -> None:
+    for page in GENERIC_PAGES:
+        make_generic_page(page)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--force', action='store_true',
@@ -976,6 +1017,9 @@ def main() -> None:
 
     artwork_rows = load_artworks_csv()
     series_rows = load_series_csv()
+
+    # Generic pages
+    make_generic_pages()
 
     # Main page
     generate_main('index.html', artwork_rows, series_rows, force=args.force)

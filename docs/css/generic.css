@@ -4,9 +4,16 @@ body {
 
   max-width: 70ex;
   text-align: left;
-  font-family: 'Droid Serif', serif;
+  font-family: sans-serif;
 
-  color: #999;
+  background-color: white;
+  --text-color: #999;
+  color: var(--text-color);
+}
+
+/* Override text color for text and links */
+a, a:active, a:visited {
+  color: var(--text-color);
 }
 
 .bureaucratic,
@@ -14,7 +21,7 @@ body {
 .bureaucratic a:active,
 .bureaucratic a:visited {
   font-family: monospace;
-  color: #999;
+  color: var(--text-color);
 }
 
 .header {
@@ -27,7 +34,7 @@ body {
 }
 
 .footer a, .footer a:active, .footer a:visited {
-  color: #999;
+  color: var(--text-color);
 }
 
 h1 a, h1 a:active, h1 a:visited,
@@ -36,7 +43,7 @@ h3 a, h3 a:active, h3 a:visited,
 h4 a, h4 a:active, h4 a:visited,
 h5 a, h5 a:active, h5 a:visited
 {
-  color: #999;
+  color: var(--text-color);
   text-decoration: none;
 }
 
@@ -49,7 +56,4 @@ h3 {
   text-align: right;
   font-family: monospace;
   font-size: 130%;
-}
-
-.navbar a {
 }

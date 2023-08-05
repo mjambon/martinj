@@ -5,7 +5,8 @@ INDEX_DIRS = \
   all \
   series/* \
   tag/* \
-  art/*
+  art/* \
+  meta
 
 DOCROOT = ../docs
 IMG = img
