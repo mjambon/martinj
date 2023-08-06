@@ -1,51 +1,113 @@
 <style>
-.artist-row {
-  margin: 3em 0;
+figure {
+  margin-top: 2em;
+  margin-bottom: 5em;
 }
 
-.artist-caption {
-  display: inline-block;
-  max-width: calc(20% - 2em);
+figcaption {
   margin: 1em;
-}
-
-.artist {
   font-variant: small-caps;
   font-size: 130%;
 }
 
 img.artwork {
-  width: 75%;
+  max-width: 100%;
   vertical-align: middle;
 }
+
 </style>
 
 <h1>Meta Gallery</h1>
 
-<div class="artist-row">
-  <img class="artwork" src="/img/medium/img-20230326.jpg">
-  <div class="artist-caption">
-    <a class="artist"
-       href="/all">Martin Jambon</a>
-  </div>
-</div>
+<h2>
+Your Host
+</h2>
+
+<figure>
+  <a class="artist"
+     href="/all">
+    <img class="artwork"
+         src="/img/medium/img-20230326.jpg"
+         title="Volymacore"
+         style="width:79%">
+    <figcaption>
+      Martin Jambon
+    </figcaption>
+  </a>
+</figure>
 
 <h2>
 Featured Artists
 </h2>
 
-<div class="artist-row">
-  <img class="artwork" src="/img/meta/jongwonbae-e-tu-brute.jpg">
-  <div class="artist-caption">
-    <a class="artist"
-       href="http://www.jongwonbae.com/paintings.html">Jongwon Bae</a>
-  </div>
-</div>
+<p>
+Here a few active artists whose work I like. Check them out.
+</p>
 
-<div class="artist-row">
-  <img class="artwork" src="/img/meta/tenfortythree-egyptian-sunset.webp">
-  <div class="artist-caption">
-    <a class="artist"
-       href="https://www.tenfortythree.art/portfolio">Ten Forty Three</a>
-  </div>
-</div>
+<!--
+   Image width is determined with ./scripts/image-max-width so that each
+   image has the same surface area (unless they're wider than a
+   threshold)
+-->
+<figure>
+  <a class="artist"
+     href="https://www.angelofranco.com/">
+    <img class="artwork"
+         src="/img/meta/angelofranco-abstract-forest-scene.jpg"
+         title="Abstract Forest Scene"
+         style="width:84%">
+    <figcaption>
+      Angelo Franco
+    </figcaption>
+  </a>
+</figure>
+
+<figure>
+  <a class="artist"
+     href="https://www.1handclapping.online/post/elke-trittel-paintings">
+    <img class="artwork"
+         src="/img/meta/elketrittel-in-the-chat-room.jpg"
+         title="In The Chatroom"
+         style="width:83%">
+    <figcaption>
+      Elke Trittel
+    </figcaption>
+  </a>
+</figure>
+
+<figure>
+  <a class="artist"
+     href="http://www.jongwonbae.com/paintings.html">
+    <img class="artwork"
+         src="/img/meta/jongwonbae-e-tu-brute.jpg"
+         title="Et tu, Brute?: The Scene of a Brute Assassination"
+         style="width:95%">
+    <figcaption>
+      Jongwon Bae
+    </figcaption>
+  </a>
+</figure>
+
+<figure>
+  <a class="artist"
+     href="https://www.tenfortythree.art/portfolio">
+    <img class="artwork"
+         src="/img/meta/tenfortythree-egyptian-sunset.webp"
+         title="Egyptian Sunset"
+         style="width:100%">
+    <figcaption>
+      Ten Forty Three
+    </figcaption>
+  </a>
+</figure>
+
+<h2>
+About this Gallery
+</h2>
+
+<p>
+This page links to the independent websites of artists that I
+picked. I encourage other individual artists&mdash;not just art
+galleries&mdash;to do the same so as to build an infinite online art
+gallery that's free of ads and under our control. Let's reclaim the Web.
+</p>

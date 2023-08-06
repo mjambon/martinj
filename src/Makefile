@@ -38,7 +38,7 @@ live:
 # Requires 'make live'.
 .PHONY: links
 links:
-	./check-links http://0.0.0.0:8000/
+	./scripts/check-links http://0.0.0.0:8000/
 
 # Copy all website files to /docs
 .PHONY: local

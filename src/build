@@ -1006,7 +1006,7 @@ def make_generic_pages() -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='Generate the website.')
     parser.add_argument('--force', action='store_true',
                     help='resize all images rather than being lazy about it')
     args = parser.parse_args()

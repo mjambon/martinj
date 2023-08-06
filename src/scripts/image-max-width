@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+#
+# Print the scaling percentage for all images to have a comparable surface
+# area.
+#
+
+import argparse
+import json
+import math
+import subprocess
+from typing import Tuple
+
+# Uses 'identify' from ImageMagick
+def image_dimensions(image_filename: str) -> Tuple[int, int]:
+    p = subprocess.run([
+        "identify",
+        "-format",
+        '{"width":%[fx:w], "height":%[fx:h]}',
+        image_filename
+    ], capture_output=True)
+    out = p.stdout.decode()
+    dic = json.loads(out)
+    return (dic['width'], dic['height'])
+
+def figure_scaling(image_filename: str, max_aspect_ratio: float) -> float:
+    (width, height) = image_dimensions(image_filename)
+    aspect_ratio = float(width) / float(height)
+    if aspect_ratio >= max_aspect_ratio:
+        return 1.0
+    else:
+        return math.sqrt(aspect_ratio / max_aspect_ratio)
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+           description=(
+               'Determine a good scaling factor to display an image '
+               'such that all images have similar surface areas'
+           )
+    )
+    parser.add_argument('image_files', nargs='+', help='image files')
+    parser.add_argument('--max-aspect-ratio',
+                        type=float,
+                        default=2.0,
+                        help='maximum landscape aspect ratio')
+    args = parser.parse_args()
+    for file in args.image_files:
+        scale = figure_scaling(file, args.max_aspect_ratio)
+        print(f"{file}: {int(100 * scale)}")
+
+main()
