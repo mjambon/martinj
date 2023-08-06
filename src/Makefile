@@ -33,6 +33,13 @@ live:
 	xdg-open http://0.0.0.0:8000/
 	python -m http.server --directory ../docs 8000
 
+# Check for broken links on the local HTTP server. This takes 20 s
+# because it downloads images.
+# Requires 'make live'.
+.PHONY: links
+links:
+	./check-links http://0.0.0.0:8000/
+
 # Copy all website files to /docs
 .PHONY: local
 local:
@@ -52,8 +59,10 @@ local:
 	done
 
 # Publish all changes
+# TODO: check links in CI rather than locally?
 .PHONY: push
 push:
 	git add ..
 	git commit -a -m 'Publish site'
 	git push origin main
+	$(MAKE) links

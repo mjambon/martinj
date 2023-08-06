@@ -1,0 +1,54 @@
+#! /usr/bin/env bash
+#
+# Check all then internal and external links of a website.
+#
+set -eu
+
+error() {
+  echo "Error: $@" >&2
+  exit 1
+}
+
+if [[ $# != 1 ]]; then
+  error "Usage: $0 URL"
+fi
+
+seed_url="$1"
+
+# If wget allowed different recursion levels for internal links than
+# for external links, we could do it in a single wget command.
+# This isn't how things work, we do it in two passes:
+#
+# 1. List all internal URLs.
+# 2. Check all URLs referenced by the internal URLs.
+
+workspace=tmp/website.wget
+rm -rf "$workspace"
+mkdir -p "$workspace"
+cd "$workspace"
+
+# Crawl the site
+log1=wget-step1.log
+echo "Collecting internal URLs."
+echo "Check for errors in $(pwd)/$log1"
+wget -o "$log1" -r -l 10 -nv --spider "$seed_url"
+
+# Extract URLs from the logs and deduplicate them
+internal_urls=$(grep -oP 'URL: ?[^ ]*' "$log1" \
+                  | sed -e 's/URL: \?//' \
+                  | sort -u )
+
+# Keep only the HTML URLs, which we guess based on the URL suffix:
+# '/' or '.html'.
+# Warning: This works for our little website but won't work in general.
+internal_html_urls=$(echo "$internal_urls" | grep -P '(/|\.html|\.htm)$')
+
+# Crawl again but allow visiting external websites, limiting the recursion
+# level to 1 since we only want to know if the external URLs exist.
+log2=wget-step2.log
+echo "Checking all links found in internal HTML documents."
+echo "Check for errors in $(pwd)/$log2"
+wget -o "$log2" -r -l 1 -nv -H $internal_html_urls
+
+echo "Found no broken links."
+rm -rf "$workspace"
