@@ -329,7 +329,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
       margin-top: 3em;
     }}
 
-    a {{
+    figcaption a {{
       color: inherit;
       text-decoration: none;
     }}
