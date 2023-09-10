@@ -23,7 +23,7 @@ CSS_PATH = '/css'
 SERIES_PATH = '/series'
 ART_PATH = '/art'
 
-VALID_TAGS = { 'for-rent' }
+VALID_TAGS = { 'for-rent', 'featured' }
 
 NAVBAR_HTML = """
 <div class="navbar">
@@ -152,9 +152,13 @@ def figure_scaling(image_filename: str) -> float:
     else:
         return math.sqrt(aspect_ratio / max_aspect_ratio)
 
-def needs_rebuild(src: str, dst: str) -> bool:
-    return not os.path.isfile(dst) \
-        or os.path.getmtime(dst) < os.path.getmtime(src)
+def needs_rebuild(src_files: List[str], dst_file: str) -> bool:
+    if not os.path.isfile(dst_file):
+        return True
+    for src_file in src_files:
+        if os.path.getmtime(dst_file) < os.path.getmtime(src_file):
+            return True
+    return False
 
 def inches_to_cm(x: float) -> float:
     return 2.54 * x
@@ -239,6 +243,35 @@ def format_extra_credits(row: Dict[str, str]) -> str:
 def reformat_date(isodate: str) -> str:
     date_ = date.fromisoformat(isodate)
     return f"{date_.strftime('%B')} {date_.year}"
+
+
+# Create an animated gif from a collection of images
+def make_animated_gif(
+        src_paths: List[str],
+        dst_path: str,
+        force: bool = False) -> None:
+    if force or needs_rebuild(src_paths, dst_path):
+        verbose_command(
+            [
+                "convert",
+                # fragile: requires original to fit:
+                "-extent", "800x600",
+                "-gravity", "center",
+                 # coupling: must match page background color:
+                "-background", "white",
+                "-dispose", "background",
+                "-delay", "200",  # * 0.01 s
+            ] + src_paths + [dst_path]
+        )
+
+
+def make_featured_gallery(
+        artwork_rows: List[Dict[str, str]],
+        force: bool = False
+) -> None:
+    src_paths = [f"img/medium/{row['image_id']}.jpg" for row in artwork_rows]
+    dst_path = 'img/other/featured.gif'
+    make_animated_gif(src_paths, dst_path, force=force)
 
 
 def make_standalone_page(row: Dict[str, str]) -> None:
@@ -378,24 +411,24 @@ def print_series_row(row: Dict[str, str],
         large = 'img/large/' + img_name
         # JPEG image quality. Default quality is 92, max is 100.
         quality = "95"
-        if force or needs_rebuild(orig, large):
+        if force or needs_rebuild([orig], large):
             verbose_command(["convert", "-resize", "1600x1600",
                              "-quality", quality,
                              orig, large])
 
-        if force or needs_rebuild(orig, medium):
+        if force or needs_rebuild([orig], medium):
             verbose_command(["convert", "-resize", "800x800",
                              "-quality", quality,
                              large, medium])
 
-        if force or needs_rebuild(orig, small):
+        if force or needs_rebuild([orig], small):
             verbose_command(["convert", "-resize", "400x400",
                              "-quality", quality,
                              medium, small])
 
         # Padded square images for Instagram
         square = 'img/square/' + img_name
-        if force or needs_rebuild(orig, square):
+        if force or needs_rebuild([orig], square):
             verbose_command([
                 "convert",
                 orig,
@@ -873,6 +906,13 @@ img.artwork {{
 I am Martin Jambon. This is the online collection of all my artworks
 since 2022, mostly paintings.
 </p>
+<p>
+  <a href="tag/featured">
+     <img src="img/other/featured.gif"
+          alt="selection of abstract paintings"
+          style="margin-top: 3em; margin-bottom: 3em" />
+  </a>
+</p>
 <div class="hexgrid-main">
 <div class="hexgrid-container">
 """
@@ -970,17 +1010,26 @@ def parse_tags(tags: str) -> List[str]:
 
 # Filter artworks by tag. Each artwork can have multiple tags.
 # Only some tags are valid, the rest are ignored.
-def extract_tags(valid_tags: Set[str],
-                 artwork_rows: List[Dict[str, str]]) -> List[Page]:
-    artwork_groups: Dict[str, List[Dict[str,str]]] = {}
+def extract_tags(
+        valid_tags: Set[str],
+        artwork_rows: List[Dict[str, str]]
+) -> Dict[str, List[Dict[str,str]]]:
+    tagged_sets: Dict[str, List[Dict[str,str]]] = {}
     for row in artwork_rows:
         tags = parse_tags(row['tags'])
         for tag in tags:
             if tag in valid_tags:
-                if tag in artwork_groups:
-                    artwork_groups[tag].append(row)
+                if tag in tagged_sets:
+                    tagged_sets[tag].append(row)
                 else:
-                    artwork_groups[tag] = [row]
+                    tagged_sets[tag] = [row]
+    return tagged_sets
+
+
+def create_tag_pages(
+        tagged_sets: Dict[str, List[Dict[str,str]]]
+) -> List[Page]:
+
     def create_page(tag: str, rows: List[Dict[str,str]]) -> Page:
         title = f"#{tag}";
         os.makedirs(f'tag/{tag}', exist_ok=True)
@@ -993,7 +1042,7 @@ def extract_tags(valid_tags: Set[str],
             rows=rows
         )
     return [ create_page(tag, rows)
-             for tag, rows in artwork_groups.items() ]
+             for tag, rows in tagged_sets.items() ]
 
 
 def make_generic_pages() -> None:
@@ -1042,8 +1091,11 @@ def main() -> None:
 
     # Tags
     os.makedirs('tag', exist_ok=True)
-    tag_pages = extract_tags(VALID_TAGS, artwork_rows)
+    tagged_sets = extract_tags(VALID_TAGS, artwork_rows)
+    tag_pages = create_tag_pages(tagged_sets)
     for page in tag_pages:
         generate_series(page, generate_dependencies=False, force=args.force)
+    make_featured_gallery(tagged_sets["featured"], force=args.force)
+
 
 main()
