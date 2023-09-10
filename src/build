@@ -49,7 +49,7 @@ class GenericPage:
 
 
 GENERIC_PAGES: List[GenericPage] = [
-    GenericPage(title_text="Meta Gallery",
+    GenericPage(title_text="Martin J. - Meta Gallery",
                 body_html_file=Path("meta.html"),
                 html_file=Path("meta/index.html"))
 ]
@@ -312,7 +312,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
     extra_credits = format_extra_credits(row)
     author_html = f"""
 <div class="main_caption">
-  Martin Jambon, {date_str}
+  Martin J., {date_str}
   <a href="https://www.instagram.com/martinjambon/">
     <img src="{IMG_PATH}/other/instagram-logo.png"
         title="Instagram"
@@ -476,7 +476,7 @@ def print_series_row(row: Dict[str, str],
 
     author_html = f"""
 <div class="main_caption">\
-  Martin Jambon, {date_str}\
+  Martin J., {date_str}\
   <a href="https://www.instagram.com/martinjambon/">
     <img src="{IMG_PATH}/other/instagram-logo.png"
          title="Instagram"
@@ -673,7 +673,7 @@ def generate_main(
 <head>
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
-  <title>Art by Martin Jambon</title>
+  <title>Martin J. - Art by Martin Jambon</title>
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
 body {{
@@ -986,7 +986,7 @@ def extract_series(series_rows: List[Dict[str, str]],
                 artwork_groups[key] = [row]
     def create_page(series_id: str, rows: List[Dict[str,str]]) -> Page:
         row = series_tbl[series_id]
-        title = row['short_description_en']
+        title = f"Martin J. - {row['short_description_en']}"
         description_html = row['description_html']
         os.makedirs(f'series/{series_id}', exist_ok=True)
         return Page(
@@ -1028,7 +1028,7 @@ def create_tag_pages(
 ) -> List[Page]:
 
     def create_page(tag: str, rows: List[Dict[str,str]]) -> Page:
-        title = f"#{tag}";
+        title = f"Martin J. #{tag}";
         os.makedirs(f'tag/{tag}', exist_ok=True)
         return Page(
             title=title,
@@ -1069,7 +1069,7 @@ def main() -> None:
     # All artworks
     os.makedirs('all', exist_ok=True)
     page_all = Page(
-        title='All Artworks!',
+        title='Martin J. - All Artworks',
         description_html=(
             "<p>This is the full gallery in reverse chronological order.</p>"
         ),
