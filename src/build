@@ -901,13 +901,10 @@ img.artwork {{
 }}
 </style>
 {NAVBAR_HTML}
-<h1>Hello.</h1>
+<h1>Martin J.</h1>
 <p>
-I am Martin Jambon. This is the online collection of all my artworks
-since 2022, mostly paintings.
-</p>
-<p>
-  <a href="tag/featured">
+  <a href="tag/featured"
+     title="Go to gallery view">
      <img src="img/other/featured.gif"
           alt="selection of abstract paintings"
           style="margin-top: 3em; margin-bottom: 3em; max-width: 100%" />
