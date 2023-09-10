@@ -255,7 +255,7 @@ def make_animated_gif(
             [
                 "convert",
                 # fragile: requires original to fit:
-                "-extent", "800x600",
+                "-extent", "800x666",
                 "-gravity", "center",
                  # coupling: must match page background color:
                 "-background", "white",
