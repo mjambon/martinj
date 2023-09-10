@@ -910,7 +910,7 @@ since 2022, mostly paintings.
   <a href="tag/featured">
      <img src="img/other/featured.gif"
           alt="selection of abstract paintings"
-          style="margin-top: 3em; margin-bottom: 3em" />
+          style="margin-top: 3em; margin-bottom: 3em; max-width: 100%" />
   </a>
 </p>
 <div class="hexgrid-main">
