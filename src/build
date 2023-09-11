@@ -914,7 +914,7 @@ img.artwork {{
      title="Go to gallery view">
      <img src="img/other/featured.gif"
           alt="selection of abstract paintings"
-          style="margin-top: 3em; margin-bottom: 3em; max-width: 100%" />
+          style="margin-bottom: 2em; max-width: 100%" />
   </a>
 </p>
 <div class="hexgrid-main">
