@@ -680,7 +680,7 @@ def generate_main(
 <head>
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
-  <title>{MARTINJ_TEXT} - Art by Martin Jambon</title>
+  <title>{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon</title>
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
 body {{
@@ -908,7 +908,7 @@ img.artwork {{
 }}
 </style>
 {NAVBAR_HTML}
-<h1>{MARTINJ_HTML}</h1>
+<h1>{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art</h1>
 <p>
   <a href="tag/featured"
      title="Go to gallery view">
