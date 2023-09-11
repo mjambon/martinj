@@ -34,6 +34,12 @@ NAVBAR_HTML = """
 </div>
 """
 
+MARTINJ_TEXT = 'Martin J.'
+MARTINJ_HTML = f'<span style="color:red">{html.escape(MARTINJ_TEXT)}</span>'
+MARTINJ_SEP_TEXT = "●"
+MARTINJ_SEP_HTML = html.escape(MARTINJ_SEP_TEXT)
+
+
 def read_file(filename: Path) -> str:
     res = ""
     with open(filename, "r") as file:
@@ -49,7 +55,7 @@ class GenericPage:
 
 
 GENERIC_PAGES: List[GenericPage] = [
-    GenericPage(title_text="Martin J. - Meta Gallery",
+    GenericPage(title_text=f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Meta Gallery",
                 body_html_file=Path("meta.html"),
                 html_file=Path("meta/index.html"))
 ]
@@ -88,7 +94,8 @@ def make_generic_page(page: GenericPage) -> None:
 
 @dataclass
 class Page:
-    title: str
+    title_text: str
+    title_html: str
     # HTML-formatted introduction that will be placed under the <h1>
     # containing the title.
     description_html: str
@@ -525,7 +532,7 @@ def generate_series(
 <head>
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
-  <title>{html.escape(page.title)}</title>
+  <title>{html.escape(page.title_text)}</title>
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
 /* Override site-wide style */
@@ -583,7 +590,7 @@ figcaption {{
 </head>
 <body>
 {NAVBAR_HTML}
-<h1>{html.escape(page.title)}</h1>
+<h1>{page.title_html}</h1>
 {page.description_html}
 <div class="artworks">
 """
@@ -673,7 +680,7 @@ def generate_main(
 <head>
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
-  <title>Martin J. - Art by Martin Jambon</title>
+  <title>{MARTINJ_TEXT} - Art by Martin Jambon</title>
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
 body {{
@@ -901,7 +908,7 @@ img.artwork {{
 }}
 </style>
 {NAVBAR_HTML}
-<h1>Martin J.</h1>
+<h1>{MARTINJ_HTML}</h1>
 <p>
   <a href="tag/featured"
      title="Go to gallery view">
@@ -986,11 +993,13 @@ def extract_series(series_rows: List[Dict[str, str]],
                 artwork_groups[key] = [row]
     def create_page(series_id: str, rows: List[Dict[str,str]]) -> Page:
         row = series_tbl[series_id]
-        title = f"Martin J. - {row['short_description_en']}"
+        title_text = f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} {row['short_description_en']}"
+        title_html = f"{MARTINJ_HTML} {MARTINJ_SEP_HTML} {html.escape(row['short_description_en'])}"
         description_html = row['description_html']
         os.makedirs(f'series/{series_id}', exist_ok=True)
         return Page(
-            title=title,
+            title_text=title_text,
+            title_html=title_html,
             description_html=description_html,
             folder=f'series/{series_id}',
             html_file=f'series/{series_id}/index.html',
@@ -1028,10 +1037,12 @@ def create_tag_pages(
 ) -> List[Page]:
 
     def create_page(tag: str, rows: List[Dict[str,str]]) -> Page:
-        title = f"Martin J. #{tag}";
+        title_text = f"{MARTINJ_TEXT} #{tag}";
+        title_html = f"{MARTINJ_HTML} #{tag}";
         os.makedirs(f'tag/{tag}', exist_ok=True)
         return Page(
-            title=title,
+            title_text=title_text,
+            title_html=title_html,
             description_html=f'',
             folder=f'tag/{tag}',
             html_file=f'tag/{tag}/index.html',
@@ -1069,7 +1080,8 @@ def main() -> None:
     # All artworks
     os.makedirs('all', exist_ok=True)
     page_all = Page(
-        title='Martin J. - All Artworks',
+        title_text=f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} All Artworks",
+        title_html=f"{MARTINJ_HTML} {MARTINJ_SEP_HTML} All Artworks",
         description_html=(
             "<p>This is the full gallery in reverse chronological order.</p>"
         ),
