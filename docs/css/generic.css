@@ -1,5 +1,5 @@
 body {
-  margin: 6.5em auto 2.5em auto;
+  margin: 1em auto 2.5em auto;
   padding: 0.5em 1.5em;
 
   max-width: 70ex;
@@ -56,4 +56,5 @@ h3 {
   text-align: right;
   font-family: monospace;
   font-size: 130%;
+  margin-bottom: 2em;
 }
