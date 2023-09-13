@@ -35,7 +35,7 @@ NAVBAR_HTML = """
 """
 
 MARTINJ_TEXT = 'Martin J.'
-MARTINJ_HTML = f'<span style="color:red">{html.escape(MARTINJ_TEXT)}</span>'
+MARTINJ_HTML = f'<span style="color:#f44">{html.escape(MARTINJ_TEXT)}</span>'
 MARTINJ_SEP_TEXT = "●"
 MARTINJ_SEP_HTML = html.escape(MARTINJ_SEP_TEXT)
 
