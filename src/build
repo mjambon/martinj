@@ -142,15 +142,15 @@ def image_dimensions(image_filename: str) -> Tuple[int, int]:
     p = subprocess.run([
         "identify",
         "-format",
-        '{"width":%[fx:w], "height":%[fx:h]}',
+        '{"height":%[fx:h], "width":%[fx:w]}',
         image_filename
     ], capture_output=True)
     out = p.stdout.decode()
     dic = json.loads(out)
-    return (dic['width'], dic['height'])
+    return (dic['height'], dic['width'])
 
 def figure_scaling(image_filename: str) -> float:
-    (width, height) = image_dimensions(image_filename)
+    (height, width) = image_dimensions(image_filename)
     aspect_ratio = float(width) / float(height)
     # sqrt(2) is the aspect ratio of A5, A4, A3, etc.
     max_aspect_ratio = math.sqrt(2.)
@@ -180,7 +180,7 @@ def format_dimensions(row: Dict[str, str]) -> Optional[str]:
         width_cm = float(row['width_cm'])
         height_cm = float(row['height_cm'])
     if width_cm > 0:
-        return f"{width_cm:.0f} cm × {height_cm:.0f} cm"
+        return f"{height_cm:.0f} cm × {width_cm:.0f} cm"
     else:
         return None
 
