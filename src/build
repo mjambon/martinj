@@ -609,6 +609,8 @@ figcaption {{
   <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC&nbsp;BY-NC-ND&nbsp;4.0</a>
   unless stated otherwise.
 </p>
+</body>
+</html>
 """
         )
 
@@ -900,6 +902,8 @@ img.artwork {{
   overflow: clip;
 }}
 </style>
+</head>
+<body>
 {NAVBAR_HTML}
 <h1>{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art</h1>
 <p>
@@ -954,6 +958,8 @@ img.artwork {{
 </div>
 </div>
 {read_file(Path("main-page-text.html"))}
+</body>
+</html>
 """
         )
 
