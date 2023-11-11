@@ -47,6 +47,13 @@ def read_file(filename: Path) -> str:
     return res
 
 
+def hash_file(filename: Path) -> int:
+    if os.path.exists(filename):
+        return hash(read_file(filename))
+    else:
+        return hash('')
+
+
 @dataclass
 class GenericPage:
     title_text: str
@@ -1033,7 +1040,7 @@ def extract_tags(
 
 def create_tag_pages(
         tagged_sets: Dict[str, List[Dict[str,str]]]
-) -> List[Page]:
+) -> Dict[str, Page]:
 
     def create_page(tag: str, rows: List[Dict[str,str]]) -> Page:
         title_text = f"{MARTINJ_TEXT} #{tag}";
@@ -1048,8 +1055,8 @@ def create_tag_pages(
             page_specific_html='',
             rows=rows
         )
-    return [ create_page(tag, rows)
-             for tag, rows in tagged_sets.items() ]
+    return { tag:create_page(tag, rows)
+             for tag, rows in tagged_sets.items() }
 
 
 def make_generic_pages() -> None:
@@ -1101,9 +1108,17 @@ def main() -> None:
     os.makedirs('tag', exist_ok=True)
     tagged_sets = extract_tags(VALID_TAGS, artwork_rows)
     tag_pages = create_tag_pages(tagged_sets)
-    for page in tag_pages:
+
+    featured_page_path = Path(tag_pages["featured"].html_file)
+    old_featured_hash = hash_file(featured_page_path)
+    for tag, page in tag_pages.items():
         generate_series(page, generate_dependencies=False, force=args.force)
-    make_featured_gallery(tagged_sets["featured"], force=args.force)
+    new_featured_hash = hash_file(featured_page_path)
+
+    # Make an animated gif from entries with the 'featured' tag:
+    force_gif = args.force or old_featured_hash != new_featured_hash
+    make_featured_gallery(tagged_sets["featured"],
+                          force=force_gif)
 
 
 main()
