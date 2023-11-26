@@ -31,7 +31,7 @@ all:
 .PHONY: live
 live:
 	xdg-open http://0.0.0.0:8000/
-	python -m http.server --directory ../docs 8000
+	python3 -m http.server --directory ../docs 8000
 
 # Check for broken links on the local HTTP server. This takes 20 s
 # because it downloads images.
