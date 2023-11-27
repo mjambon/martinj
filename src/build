@@ -28,8 +28,8 @@ VALID_TAGS = { 'for-rent', 'featured' }
 NAVBAR_HTML = """
 <div class="navbar">
   <a href="/">Paintings</a>
-  <a href="/#about">About</a>
-  <a href="/#contact">Contact</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
   <a href="/meta">Meta</a>
 </div>
 """
@@ -971,6 +971,54 @@ img.artwork {{
         )
 
 
+def generate_about(html_file: str) -> None:
+    print(f"### Generating {html_file}")
+    with open(html_file, 'w') as out:
+        out.write(
+        f"""<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon</title>
+  <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
+  <style type="text/css"></style>
+</head>
+<body>
+{NAVBAR_HTML}
+<h1>{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art</h1></div>
+</div>
+{read_file(Path("about-page-text.html"))}
+</body>
+</html>
+"""
+        )
+
+
+def generate_contact(html_file: str) -> None:
+    print(f"### Generating {html_file}")
+    with open(html_file, 'w') as out:
+        out.write(
+        f"""<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon</title>
+  <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
+  <style type="text/css"></style>
+</head>
+<body>
+{NAVBAR_HTML}
+<h1>{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art</h1></div>
+</div>
+{read_file(Path("contact-page-text.html"))}
+</body>
+</html>
+"""
+        )
+
+
 def load_artworks_csv() -> List[Dict[str, str]]:
     with open('artworks.csv', 'r') as csvfile:
         row_reader = csv.DictReader(csvfile)
@@ -1082,6 +1130,10 @@ def main() -> None:
 
     # Main page
     generate_main('index.html', artwork_rows, series_rows, force=args.force)
+
+    # Other handwritten pages
+    generate_about('about/index.html')
+    generate_contact('contact/index.html')
 
     # All artworks
     os.makedirs('all', exist_ok=True)

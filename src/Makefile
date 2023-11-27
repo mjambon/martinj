@@ -2,6 +2,8 @@
 # as-is into /docs
 INDEX_DIRS = \
   . \
+  about \
+  contact \
   all \
   series/* \
   tag/* \
