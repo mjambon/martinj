@@ -34,6 +34,16 @@ NAVBAR_HTML = """
 </div>
 """
 
+FAVICON_HTML = """
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+"""
+
 MARTINJ_TEXT = 'Martin J.'
 MARTINJ_HTML = f'<span style="color:#f44">{html.escape(MARTINJ_TEXT)}</span>'
 MARTINJ_SEP_TEXT = "●"
@@ -86,6 +96,7 @@ def make_generic_page(page: GenericPage) -> None:
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{html.escape(page.title_text)}</title>
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
+{FAVICON_HTML}
 </head>
 <body>
 {NAVBAR_HTML}
@@ -349,6 +360,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{html.escape(title)}</title>
+{FAVICON_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
     body {{
@@ -540,6 +552,7 @@ def generate_series(
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{html.escape(page.title_text)}</title>
+{FAVICON_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
 /* Override site-wide style */
@@ -690,6 +703,7 @@ def generate_main(
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon</title>
+{FAVICON_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
 body {{
@@ -981,6 +995,7 @@ def generate_about(html_file: str) -> None:
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon</title>
+{FAVICON_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css"></style>
 </head>
@@ -1005,6 +1020,7 @@ def generate_contact(html_file: str) -> None:
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon</title>
+{FAVICON_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css"></style>
 </head>
