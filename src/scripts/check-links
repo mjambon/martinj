@@ -2,7 +2,7 @@
 #
 # Check all then internal and external links of a website.
 #
-set -eu
+set -eu -o pipefail
 
 error() {
   echo "Error: $@" >&2
@@ -48,7 +48,7 @@ internal_html_urls=$(echo "$internal_urls" | grep -P '(/|\.html|\.htm)$')
 log2=wget-step2.log
 echo "Checking all links found in internal HTML documents."
 echo "Check for errors in $(pwd)/$log2"
-wget -o "$log2" -r -l 1 -nv -H $internal_html_urls
+wget -o "$log2" -r -l 1 -nv --trust-server-names -H $internal_html_urls
 
 echo "Found no broken links."
 rm -rf "$workspace"
