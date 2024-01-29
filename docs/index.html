@@ -1,5 +1,6 @@
+
 <!doctype html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
@@ -15,223 +16,58 @@
 
   <link rel="stylesheet" href="/css/generic.css" />
   <style type="text/css">
+/* Override site-wide style */
 body {
-  max-width: 100ex;
+  font-family: sans-serif;
 }
 
-/* Hexagonal grid.
-
-   The hexagonal grid uses the following levels of containers:
-   - main: root container, sets display=flex
-   - container: the actual container of cells
-   - container::before: invisible pseudo-element to which we give a shape
-     that forces an indentation of a half cell every other row.
-   - cell: a rectangular container that can fit a hexagon with the pointy
-     ends at the top and bottom.
-   - square: a square container that can fit a circle with the same center
-     as the hexagon of the hexagonal grid. Rounding the corners of the
-     square produces a circle that's perfectly packed and touches 6 neighbors.
-
-   See the prototype in misc/hexagons.html for an uncluttered example.
-*/
-.hexgrid-main {
-  display: flex;
-
-  /* Hexagon dimensions */
-  --hex-side: 120px;
-  --hex-min-dim: calc(1.732 * var(--hex-side)); /* width */
-  --hex-max-dim: calc(2 * var(--hex-side)); /* height */
-
-  /* Vertical offset from one cell to the next */
-  --period: calc(1.5 * var(--hex-side));
-
-  /* Top and bottom padding that makes each cell a square that fits a
-     circle rather than the rectangle that fits a hexagon. */
-  --square-padding: calc(0.5 * (var(--hex-max-dim) - var(--hex-min-dim)));
-
-  /* How much the disks should fill the available space */
-  --disk-space-fill: 95%;
-}
-
+/* Disable zoom-in on hover on touchscreens */
 @media (hover: hover) {
-  .shadowbox {
-    /* fade in and out */
-    visibility: hidden;
-    opacity: 0;
-    transition: 0.3s;
-
-    width: var(--disk-space-fill);
-    height: var(--disk-space-fill);
-    border-radius: 50%;
-
-    /* position:relative or position:absolute is needed for z-index
-       to take effect */
-    z-index: 2;
-
-    /* center it */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    background-color: rgba(0, 0, 0, 0.4);
+  .artworks:hover img.artwork {
+    opacity: 0.2;
   }
 
-  .hexgrid-square:hover .shadowbox {
-    visibility: visible;
-    opacity: 1;
+  .artworks:hover img.artwork:hover {
+    opacity: 1.0;
+
+    /* place the image in the foreground when zooming in */
+    z-index: 1;
   }
 
-  .textbox {
-    /* Fade in and out. The text is invisible (fully transparent) on desktop */
-    opacity: 0;
-    transition: 0.3s;
+  img.artwork:hover {
+    /* zoom on hover */
+    transform: scale(1.6);
   }
 
-  .hexgrid-square:hover .textbox {
-    opacity: 1;
-    background-color: #0000; /* transparent */
+  img.artwork {
+    transition: transform .2s;
   }
-}
-
-.hexgrid-container {
-  /* Disable whitespace between inline block elements */
-  font-size: 0;
-
-  /*
-     The bottom end of the container sometimes doesn't go far enough.
-     No idea what's going on. Adding a big margin sort of works
-     around the problem.
-  */
-  margin-bottom: calc(1 * var(--hex-max-dim));
-}
-
-/* for debugging */
-.hexgrid-container div:nth-child(odd) {
-  /* background: #0f08; */
-}
-
-.hexgrid-container::before {
-  content: "";
-  width: calc(0.5 * var(--hex-min-dim));
-  float: left;
-  height: 120%;
-  shape-outside:
-    repeating-linear-gradient(
-      transparent 0 calc(1.8 * var(--period)),
-      black calc(1.8 * var(--period)) calc(1.9 * var(--period)),
-      transparent calc(1.9 * var(--period)) calc(2 * var(--period)));
-}
-
-/* rectangular grid cell suitable to fit a hexagon */
-.hexgrid-cell {
-  width: var(--hex-min-dim);
-  height: calc(var(--hex-max-dim) - 2 * var(--square-padding));
-  display: inline-block;
-  font-size: initial;
-  /* background: #f008; */
-
-  margin-bottom: calc(-0.5 * var(--hex-side));
-  padding: var(--square-padding) 0; /* top and bottom padding */
-}
-
-/* square container suitable to fit a circle */
-.hexgrid-square {
-  /* background-color: blue; */
-  border-radius: 50%;
-  width: 100%;
-  height: 100%;
-
-  /* Allow text centering relative to this element in descendant elements */
-  position: relative;
-
-  /* Hide the corner of images */
-  overflow: clip;
-}
-
-/*
-   A decorative ring behind the image:
-   - outer-disk: color disk placed behind the inner disk
-   - inner-disk: smaller disk containing the image
-
-   The actual color and thickness of each ring is adjusted with
-   inline style instructions.
-*/
-.outer-disk {
-  border-radius: 50%;
-  width: var(--disk-space-fill);
-  height: var(--disk-space-fill);
-  background-color: teal; /* sample value, customized later */
-
-  /* center it */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  /* place it behind the image */
-  z-index: -1;
-}
-
-.inner-disk {
-  --ring-thickness: 20%; /* sample value, customized later */
-  border-radius: 50%;
-  width: calc(100% - var(--ring-thickness));
-  height: calc(100% - var(--ring-thickness));
-
-  /* center it */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  overflow: clip;
-}
-
-.textbox {
-  color: white;
-  font-size: 100%;
-  font-weight: bold;
-  line-height: normal;
-
-  /* add a background for better readability (mobile) */
-  background-color: #8888;
-  padding: 0.2em;
-  border-radius: 1em;
-
-  /* center within the cell */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  /* text justification */
-  text-align: center;
-
-  /* show text over the image on mobile devices */
-  z-index: 3;
-}
-
-.series_link, .series_link:hover {
-  text-decoration: none;
 }
 
 img.artwork {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  transform: scale(1.6);
+  /* grey frame around each artwork image */
+  background-color:#eee;
+  padding: 3%;
+  width: 94%;
 
-  /* center */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  /* Clip anything outside of the image's container */
-  overflow: clip;
+  position: relative;
+  z-index: 0;
 }
-</style>
+
+figcaption {
+  margin: 1em 0em;
+}
+
+.hash_link {
+  visibility: hidden;
+}
+
+/* Make the hash-link only visible when hovering over the title. */
+.main_caption:hover .hash_link {
+  visibility: visible;
+  color: #999;
+}
+  </style>
 </head>
 <body>
 
@@ -243,177 +79,307 @@ img.artwork {
 </div>
 
 <h1><span style="color:#f44">Martin J.</span> ● Art</h1>
-<p>
-  <a href="tag/featured"
-     title="Go to gallery view">
-     <img src="img/other/featured.gif"
-          alt="selection of abstract paintings"
-          style="margin-bottom: 2em; max-width: 100%" />
+
+<div class="artworks">
+
+<a name="img-20240112">
+<figure style="margin: 0px 1%; padding-top: 40px">
+  <a href="/art/mj-20240112">
+    <img src="/img/medium/img-20240112.jpg"
+         alt="abstract art"
+         class="artwork"/>
   </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Slomdobi
+  
+  <a href="#img-20240112"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., January 2024  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>46 cm × 61 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+<a name="img-20231125">
+<figure style="margin: 0px 0%; padding-top: 40px">
+  <a href="/art/mj-20231125">
+    <img src="/img/medium/img-20231125.jpg"
+         alt="abstract art"
+         class="artwork"/>
+  </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Stomilactilus
+  
+  <a href="#img-20231125"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., November 2023  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>61 cm × 91 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+<a name="img-20231031">
+<figure style="margin: 0px 0%; padding-top: 40px">
+  <a href="/art/mj-20231031">
+    <img src="/img/medium/img-20231031.jpg"
+         alt="abstract art"
+         class="artwork"/>
+  </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Elfinnote
+  
+  <a href="#img-20231031"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., October 2023  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>61 cm × 91 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+<a name="img-20230902">
+<figure style="margin: 0px 2%; padding-top: 40px">
+  <a href="/art/mj-20230902">
+    <img src="/img/medium/img-20230902.jpg"
+         alt="abstract art"
+         class="artwork"/>
+  </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Hyfleem
+  
+  <a href="#img-20230902"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., September 2023  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>61 cm × 76 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+<a name="img-20230808">
+<figure style="margin: 0px 1%; padding-top: 40px">
+  <a href="/art/mj-20230808">
+    <img src="/img/medium/img-20230808.jpg"
+         alt="abstract art"
+         class="artwork"/>
+  </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Ownolob
+  
+  <a href="#img-20230808"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., August 2023  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>46 cm × 61 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+<a name="img-20230804">
+<figure style="margin: 0px 1%; padding-top: 40px">
+  <a href="/art/mj-20230804">
+    <img src="/img/medium/img-20230804.jpg"
+         alt="abstract art"
+         class="artwork"/>
+  </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Kloginastik
+  
+  <a href="#img-20230804"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., August 2023  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>46 cm × 61 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+<a name="img-20230618">
+<figure style="margin: 0px 0%; padding-top: 40px">
+  <a href="/art/mj-20230618">
+    <img src="/img/medium/img-20230618.jpg"
+         alt="abstract art"
+         class="artwork"/>
+  </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Jhinghothorp
+  
+  <a href="#img-20230618"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., June 2023  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>61 cm × 91 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+<a name="img-20230509">
+<figure style="margin: 0px 1%; padding-top: 40px">
+  <a href="/art/mj-20230509">
+    <img src="/img/medium/img-20230509.jpg"
+         alt="abstract art"
+         class="artwork"/>
+  </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Swalswot
+  
+  <a href="#img-20230509"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., May 2023  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>46 cm × 61 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+<a name="img-20230423">
+<figure style="margin: 0px 1%; padding-top: 40px">
+  <a href="/art/mj-20230423">
+    <img src="/img/medium/img-20230423.jpg"
+         alt="abstract art"
+         class="artwork"/>
+  </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Hintojaz
+  
+  <a href="#img-20230423"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., April 2023  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>46 cm × 61 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+<a name="img-20230416">
+<figure style="margin: 0px 1%; padding-top: 40px">
+  <a href="/art/mj-20230416">
+    <img src="/img/medium/img-20230416.jpg"
+         alt="abstract art"
+         class="artwork"/>
+  </a>
+  <figcaption>
+    
+<div class="main_caption">
+  Gloobiko
+  
+  <a href="#img-20230416"
+     title="Direct link to artwork"
+     class="hash_link">#</a></div>
+
+<div class="main_caption">  Martin J., April 2023  <a href="https://www.instagram.com/martinjambon/">
+    <img src="/img/other/instagram-logo.png"
+         title="Instagram"
+         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
+  </a>
+</div>
+
+    <div style="margin:0.5em 0em">
+<div style='font-size: 80%'>46 cm × 61 cm, canvas</div>
+</div>
+  </figcaption>
+</figure>
+
+</div>
+<p class="bureaucratic" style="margin:4em 0em">
+  All artworks on <a href="https://martinj.art/">martinj.art</a>
+  ©&nbsp;2022&ndash;2023
+  by <a href="https://mjambon.com">Martin Jambon</a>
+  are licensed under
+  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC&nbsp;BY-NC-ND&nbsp;4.0</a>
+  unless stated otherwise.
 </p>
-<div class="hexgrid-main">
-<div class="hexgrid-container">
-
-<a href="/all"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Latest</div>
-    <div class="outer-disk" style="background-color:gray"></div>
-    <div class="inner-disk" style="--ring-thickness:20%">
-      <img class="artwork" src="/img/small/img-20240112.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/ser-20230318"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Color on Canvas 2023-present (24 artworks)</div>
-    <div class="outer-disk" style="background-color:mistyrose"></div>
-    <div class="inner-disk" style="--ring-thickness:25.00%">
-      <img class="artwork" src="/img/small/img-20230416.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/ser-20230111"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Color on Wood 2023 (10 artworks)</div>
-    <div class="outer-disk" style="background-color:darkmagenta"></div>
-    <div class="inner-disk" style="--ring-thickness:40.00%">
-      <img class="artwork" src="/img/small/img-20230122.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/ser-20230108"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Humanity 2022 (3 artworks)</div>
-    <div class="outer-disk" style="background-color:mediumaquamarine"></div>
-    <div class="inner-disk" style="--ring-thickness:20.00%">
-      <img class="artwork" src="/img/small/img-20230108-4.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/ser-20221030"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Atmospheric Formations 2022 (7 artworks)</div>
-    <div class="outer-disk" style="background-color:gold"></div>
-    <div class="inner-disk" style="--ring-thickness:50.00%">
-      <img class="artwork" src="/img/small/img-20221221.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/ser-20221125"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Millet’s Countryside 2022 (27 artworks)</div>
-    <div class="outer-disk" style="background-color:sienna"></div>
-    <div class="inner-disk" style="--ring-thickness:20.00%">
-      <img class="artwork" src="/img/small/img-20221125-21.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/ser-20220305"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Polychromes 2022 (39 artworks)</div>
-    <div class="outer-disk" style="background-color:salmon"></div>
-    <div class="inner-disk" style="--ring-thickness:25.00%">
-      <img class="artwork" src="/img/small/img-20220803-1.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/ser-20220320"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Monochromes 2022 (9 artworks)</div>
-    <div class="outer-disk" style="background-color:navajowhite"></div>
-    <div class="inner-disk" style="--ring-thickness:30.00%">
-      <img class="artwork" src="/img/small/img-20220409.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/ser-20220212"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Multilayer 2022 (4 artworks)</div>
-    <div class="outer-disk" style="background-color:palegreen"></div>
-    <div class="inner-disk" style="--ring-thickness:40.00%">
-      <img class="artwork" src="/img/small/img-20220313.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/ser-20220116"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Full Space 2022 (6 artworks)</div>
-    <div class="outer-disk" style="background-color:tomato"></div>
-    <div class="inner-disk" style="--ring-thickness:55.00%">
-      <img class="artwork" src="/img/small/img-20220131.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-<a href="/series/other"
-   class="series_link">
-<div class="hexgrid-cell">
-  <div class="hexgrid-square">
-    <div class="shadowbox"></div>
-    <div class="textbox">Unclassified 2022-present</div>
-    <div class="outer-disk" style="background-color:cornflowerblue"></div>
-    <div class="inner-disk" style="--ring-thickness:30.00%">
-      <img class="artwork" src="/img/small/img-20220821.jpg"/>
-    </div>
-  </div>
-</div>
-</a>
-
-</div>
-</div>
-<!-- This page fragment is inserted after the preview of paintings -->
-
-<!-- proof of ownership for Mastodon -->
-<a rel="me" href="https://qoto.org/@mjambon"></a>
-
 </body>
 </html>

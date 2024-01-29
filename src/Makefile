@@ -2,6 +2,7 @@
 # as-is into /docs
 INDEX_DIRS = \
   . \
+  archive \
   about \
   contact \
   all \

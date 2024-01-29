@@ -689,7 +689,7 @@ def count_items_in_series(artwork_rows:
     return counts
 
 
-def generate_main(
+def generate_archive(
         html_file: str,
         artwork_rows: List[Dict[str, str]],
         series_rows: List[Dict[str, str]],
@@ -930,7 +930,7 @@ img.artwork {{
 <p>
   <a href="tag/featured"
      title="Go to gallery view">
-     <img src="img/other/featured.gif"
+     <img src="/img/other/featured.gif"
           alt="selection of abstract paintings"
           style="margin-bottom: 2em; max-width: 100%" />
   </a>
@@ -978,7 +978,7 @@ img.artwork {{
         f"""
 </div>
 </div>
-{read_file(Path("main-page-text.html"))}
+{read_file(Path("archive-page-text.html"))}
 </body>
 </html>
 """
@@ -1102,13 +1102,22 @@ def extract_tags(
     return tagged_sets
 
 
+# Return (text title, html title) for a tag.
+def title_of_tag(tag: str) -> Tuple[str, str]:
+    if tag == "featured":
+        return ( f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon",
+                 f"{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art" )
+    else:
+        return ( f"{MARTINJ_TEXT} #{tag}",
+                 f"{MARTINJ_HTML} #{tag}" )
+
+
 def create_tag_pages(
         tagged_sets: Dict[str, List[Dict[str,str]]]
 ) -> Dict[str, Page]:
 
     def create_page(tag: str, rows: List[Dict[str,str]]) -> Page:
-        title_text = f"{MARTINJ_TEXT} #{tag}";
-        title_html = f"{MARTINJ_HTML} #{tag}";
+        title_text, title_html = title_of_tag(tag)
         os.makedirs(f'tag/{tag}', exist_ok=True)
         return Page(
             title_text=title_text,
@@ -1144,8 +1153,9 @@ def main() -> None:
     # Generic pages
     make_generic_pages()
 
-    # Main page
-    generate_main('index.html', artwork_rows, series_rows, force=args.force)
+    # Archive (former main page)
+    generate_archive('archive/index.html',
+                     artwork_rows, series_rows, force=args.force)
 
     # Other handwritten pages
     generate_about('about/index.html')
