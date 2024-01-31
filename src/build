@@ -931,7 +931,7 @@ img.artwork {{
 {NAVBAR_HTML}
 <h1>{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art</h1>
 <p>
-  <a href="tag/featured"
+  <a href="/tag/featured"
      title="Go to gallery view">
      <img src="/img/other/featured.gif"
           alt="selection of abstract paintings"
