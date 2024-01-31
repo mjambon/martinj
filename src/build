@@ -522,7 +522,7 @@ def print_series_row(row: Dict[str, str],
     html_file.write(
 f"""
 <a name="{html.escape(hash_name)}">
-<figure style="margin: 0px {fig_margin}%; padding-top: 40px">
+<figure style="margin: 0px {fig_margin}%; padding-top: 80px">
   <a href="{html.escape(img_page_url)}">
     <img src="{html.escape(medium_img_url)}"
          alt="abstract art"
