@@ -45,7 +45,7 @@ FAVICON_HTML = """
 """
 
 MARTINJ_TEXT = 'Martin J.'
-MARTINJ_HTML = f'<span style="color:#f44">{html.escape(MARTINJ_TEXT)}</span>'
+MARTINJ_HTML = f'{html.escape(MARTINJ_TEXT)}'
 MARTINJ_SEP_TEXT = "●"
 MARTINJ_SEP_HTML = html.escape(MARTINJ_SEP_TEXT)
 
@@ -338,11 +338,6 @@ def make_standalone_page(row: Dict[str, str]) -> None:
     author_html = f"""
 <div class="main_caption">
   Martin J., {date_str}
-  <a href="https://www.instagram.com/martinjambon/">
-    <img src="{IMG_PATH}/other/instagram-logo.png"
-        title="Instagram"
-        style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.5">
-  </a>
   {extra_credits}
 </div>
 """
@@ -384,7 +379,6 @@ def make_standalone_page(row: Dict[str, str]) -> None:
     figcaption {{
       display: inline-block;
       width: 70%;
-      color: grey;
       margin-top: 3em;
     }}
 
@@ -503,11 +497,6 @@ def print_series_row(row: Dict[str, str],
     author_html = f"""
 <div class="main_caption">\
   Martin J., {date_str}\
-  <a href="https://www.instagram.com/martinjambon/">
-    <img src="{IMG_PATH}/other/instagram-logo.png"
-         title="Instagram"
-         style="height:1em;padding:0em 0.5em;vertical-align:middle;opacity:0.6"/>
-  </a>
 </div>
 """
 
@@ -522,7 +511,7 @@ def print_series_row(row: Dict[str, str],
     html_file.write(
 f"""
 <a name="{html.escape(hash_name)}">
-<figure style="margin: 0px {fig_margin}%; padding-top: 80px">
+<figure style="margin: 0px {fig_margin}%; padding: 60px 0px;">
   <a href="{html.escape(img_page_url)}">
     <img src="{html.escape(medium_img_url)}"
          alt="abstract art"
@@ -585,7 +574,7 @@ body {{
 
 img.artwork {{
   /* grey frame around each artwork image */
-  background-color:#eee;
+  background-color: var(--grey-picture-frame);
   padding: 3%;
   width: 94%;
 
@@ -929,7 +918,7 @@ img.artwork {{
 </head>
 <body>
 {NAVBAR_HTML}
-<h1>{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art</h1>
+<h1>{MARTINJ_HTML}</h1>
 <p>
   <a href="/tag/featured"
      title="Go to gallery view">
@@ -1004,7 +993,7 @@ def generate_about(html_file: str) -> None:
 </head>
 <body>
 {NAVBAR_HTML}
-<h1>{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art</h1></div>
+<h1>{MARTINJ_HTML}</h1></div>
 </div>
 {read_file(Path("about-page-text.html"))}
 </body>
@@ -1029,7 +1018,7 @@ def generate_contact(html_file: str) -> None:
 </head>
 <body>
 {NAVBAR_HTML}
-<h1>{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art</h1></div>
+<h1>{MARTINJ_HTML}</h1></div>
 </div>
 {read_file(Path("contact-page-text.html"))}
 </body>
@@ -1109,7 +1098,7 @@ def extract_tags(
 def title_of_tag(tag: str) -> Tuple[str, str]:
     if tag == "featured":
         return ( f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon",
-                 f"{MARTINJ_HTML} {MARTINJ_SEP_HTML} Art" )
+                 f"{MARTINJ_HTML}" )
     else:
         return ( f"{MARTINJ_TEXT} #{tag}",
                  f"{MARTINJ_HTML} #{tag}" )

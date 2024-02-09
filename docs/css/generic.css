@@ -7,8 +7,13 @@ body {
   font-family: sans-serif;
 
   background-color: white;
-  --text-color: #999;
+  --text-color: #899;
   color: var(--text-color);
+  --grey-picture-frame: #e0e2e0;
+}
+
+h1, h2, h3 {
+  color: #120;
 }
 
 /* Override text color for text and links */
