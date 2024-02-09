@@ -511,7 +511,7 @@ def print_series_row(row: Dict[str, str],
     html_file.write(
 f"""
 <a name="{html.escape(hash_name)}">
-<figure style="margin: 0px {fig_margin}%; padding: 60px 0px;">
+<figure style="margin: 0px {fig_margin}%; padding: 90px 0px 50px;">
   <a href="{html.escape(img_page_url)}">
     <img src="{html.escape(medium_img_url)}"
          alt="abstract art"
@@ -1098,7 +1098,7 @@ def extract_tags(
 def title_of_tag(tag: str) -> Tuple[str, str]:
     if tag == "featured":
         return ( f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon",
-                 f"{MARTINJ_HTML}" )
+                 f"<!-- no title -->" )
     else:
         return ( f"{MARTINJ_TEXT} #{tag}",
                  f"{MARTINJ_HTML} #{tag}" )

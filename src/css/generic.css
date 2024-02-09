@@ -7,18 +7,22 @@ body {
   font-family: sans-serif;
 
   background-color: white;
-  --text-color: #899;
+  --text-color: #849090;
   color: var(--text-color);
-  --grey-picture-frame: #e0e2e0;
+  --grey-picture-frame: #e0e1e0;
 }
 
 h1, h2, h3 {
-  color: #120;
+  color: #020;
 }
 
 /* Override text color for text and links */
 a, a:active, a:visited {
   color: var(--text-color);
+}
+
+.artworks {
+  padding-top: 40px;
 }
 
 .bureaucratic,
