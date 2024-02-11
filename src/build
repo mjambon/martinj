@@ -127,6 +127,18 @@ class Page:
     rows: List[Dict[str, str]]
 
 
+# Sort the rows in the order specified by the list of IDs.
+def order_rows(
+        ids: List[str], rows: List[Dict[str, str]]
+) -> List[Dict[str, str]]:
+    id_tbl: Dict[str, int] = {}
+    for index, id_ in enumerate(ids):
+        id_tbl[id_] = index
+    def get_key(row: Dict[str, str]) -> int:
+        return id_tbl.get(row['artwork_id'], 100000)
+    return sorted(rows, key=get_key)
+
+
 # The built-in '.capitalize()' method will downcase the rest of the string,
 # which we don't want.
 def capitalize_first_char(s: str) -> str:
@@ -1104,12 +1116,32 @@ def title_of_tag(tag: str) -> Tuple[str, str]:
                  f"{MARTINJ_HTML} #{tag}" )
 
 
+def sort_rows_for_tag(
+        tag: str, rows: List[Dict[str,str]]
+) -> List[Dict[str,str]]:
+    if tag == "featured":
+        # List of artwork IDs to occur in this particular order
+        ids = [
+            "mj-20231031",
+            "mj-20231125",
+            "mj-20230416",
+            "mj-20230902",
+            "mj-20240112",
+            "mj-20230618",
+            "mj-20230509",
+            "mj-20230423",
+        ]
+        return order_rows(ids, rows)
+    else:
+        return rows
+
 def create_tag_pages(
         tagged_sets: Dict[str, List[Dict[str,str]]]
 ) -> Dict[str, Page]:
 
     def create_page(tag: str, rows: List[Dict[str,str]]) -> Page:
         title_text, title_html = title_of_tag(tag)
+        rows = sort_rows_for_tag(tag, rows)
         os.makedirs(f'tag/{tag}', exist_ok=True)
         return Page(
             title_text=title_text,
