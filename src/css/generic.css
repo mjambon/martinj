@@ -10,6 +10,7 @@ body {
   --text-color: #849090;
   color: var(--text-color);
   --grey-picture-frame: #e0e1e0;
+  --sep-line: var(--grey-picture-frame) dashed 1px;
 }
 
 h1, h2, h3 {
@@ -65,5 +66,7 @@ h3 {
   text-align: right;
   font-family: monospace;
   font-size: 130%;
-  margin-bottom: 2em;
+  padding-bottom: 1em;
+  border-bottom: var(--sep-line);
+  margin-bottom: 4em;
 }
