@@ -31,17 +31,20 @@ all:
 	$(MAKE) local
 	git status
 
+LOCAL_PORT = 8080
+LOCAL_URL = http://0.0.0.0:$(PORT)/
+
 .PHONY: live
 live:
-	xdg-open http://0.0.0.0:8080/
-	python3 -m http.server --directory ../docs 8080
+	xdg-open $(LOCAL_URL)
+	python3 -m http.server --directory ../docs $(LOCAL_PORT)
 
 # Check for broken links on the local HTTP server. This takes 20 s
 # because it downloads images.
 # Requires 'make live'.
 .PHONY: links
 links:
-	./scripts/check-links http://0.0.0.0:8000/
+	./scripts/check-links $(LOCAL_URL)
 
 # Copy all website files to /docs
 .PHONY: local
