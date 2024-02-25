@@ -11,13 +11,18 @@ body {
 
   background-color: white;
   --text-color: #301010;
+  --monospace-text-color: #849090;
   color: var(--text-color);
   --grey-picture-frame: #e0e1e0;
   --sep-line: var(--grey-picture-frame) dashed 1px;
 }
 
-h1, h2, h3 {
+
+h1, h2, h3, h4 ,h5 {
   color: #020;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
 }
 
 /* Override text color for text and links */
@@ -34,7 +39,7 @@ a, a:active, a:visited {
 .bureaucratic a:active,
 .bureaucratic a:visited {
   font-family: monospace;
-  color: var(--text-color);
+  color: var(--monospace-text-color);
 }
 
 .header {
@@ -47,7 +52,7 @@ a, a:active, a:visited {
 }
 
 .footer a, .footer a:active, .footer a:visited {
-  color: var(--text-color);
+  color: var(--monospace-text-color);
 }
 
 h1 a, h1 a:active, h1 a:visited,
@@ -73,11 +78,11 @@ h3 {
   font-size: 110%;
   padding-bottom: 1em;
   border-bottom: var(--sep-line);
-  margin-bottom: 4em;
+  margin-bottom: 2em;
 }
 
 .navbar a {
-  padding-left: 1em;
+  margin-left: 1em;
   text-decoration: none;
 }
 
