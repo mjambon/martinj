@@ -32,7 +32,7 @@ all:
 	git status
 
 LOCAL_PORT = 8080
-LOCAL_URL = http://0.0.0.0:$(PORT)/
+LOCAL_URL = http://0.0.0.0:$(LOCAL_PORT)/
 
 .PHONY: live
 live:
