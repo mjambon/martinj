@@ -44,6 +44,19 @@ FAVICON_HTML = """
   <meta name="theme-color" content="#ffffff">
 """
 
+# Obtained from the instructions at Google Fonts for the Roboto font:
+# https://fonts.google.com/selection/embed
+FONT_HTML = """
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+"""
+
+SHARED_HEADER_HTML = f"""
+{FAVICON_HTML}
+{FONT_HTML}
+"""
+
 MARTINJ_TEXT = 'Martin J.'
 MARTINJ_HTML = f'{html.escape(MARTINJ_TEXT)}'
 MARTINJ_SEP_TEXT = "●"
@@ -96,7 +109,7 @@ def make_generic_page(page: GenericPage) -> None:
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{html.escape(page.title_text)}</title>
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
-{FAVICON_HTML}
+{SHARED_HEADER_HTML}
 </head>
 <body>
 {NAVBAR_HTML}
@@ -323,37 +336,30 @@ def make_standalone_page(row: Dict[str, str]) -> None:
     html_file = html_dir + '/index.html'
     os.makedirs(html_dir, exist_ok=True)
 
-    main_caption = f"{title}"
-    main_caption_html = f"""
-<div>
-  {html.escape(main_caption)}
+    title_line = f"{title}"
+    title_line_html = f"""
+<div class="title_line">
+  {html.escape(title_line)}
 </div>
 """
 
     dimensions = format_dimensions(row)
     support = format_support(row)
-    location = format_location(row)
     dim_html = ""
     if dimensions:
         line = dimensions
         if support:
             line += f", {support}"
         dim_html = f"""
-<div style='font-size: 80%'>{html.escape(line)}</div>
+<div class="medium_line">{html.escape(line)}</div>
 """
 
     extra_credits = format_extra_credits(row)
-    author_html = f"""
-<div class="main_caption">
+    author_line_html = f"""
+<div class="author_line">
   Martin J., {date_str}
   {extra_credits}
 </div>
-"""
-
-    loc_html = ""
-    if location:
-        loc_html = f"""
-<div style='font-style: italic'>{html.escape(location)}</div>
 """
 
     page_contents = f"""
@@ -363,7 +369,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{html.escape(title)}</title>
-{FAVICON_HTML}
+{SHARED_HEADER_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
     body {{
@@ -390,9 +396,9 @@ def make_standalone_page(row: Dict[str, str]) -> None:
   <div>
     <img class="artwork" src="{img_url}"/>
     <div class="caption">
-      {main_caption_html}{author_html}
-      <div style="margin:1em 0em">
-        {dim_html}{loc_html}
+      {title_line_html}{author_line_html}
+      <div class="medium_line">
+        {dim_html}
       </div>
     </div>
   </div>
@@ -478,28 +484,20 @@ def print_series_row(row: Dict[str, str],
 
     dimensions = format_dimensions(row)
     support = format_support(row)
-    location = format_location(row)
     dim_html = ""
     if dimensions:
         line = dimensions
         if support:
             line += f", {support}"
         dim_html = f"""
-<div style='font-size: 80%'>{html.escape(line)}</div>
+{html.escape(line)}
 """
 
     author_html = f"""
-<div class="main_caption">\
+<div class="author_line">\
   Martin J., {date_str}\
 </div>
 """
-
-    loc_html = ""
-    if location:
-        loc_html = f"""
-<div style='font-style: italic'>{html.escape(location)}</div>\
-"""
-
     # Write to main page
     img_page_url = get_img_page_url(row)
     html_file.write(
@@ -513,7 +511,7 @@ f"""
   </a>
   <figcaption>
     {main_caption_html}{author_html}
-    <div style="margin:0.5em 0em">{dim_html}{loc_html}</div>
+    <div class="medium_line">{dim_html}</div>
   </figcaption>
 </figure>
 """
@@ -535,14 +533,9 @@ def generate_series(
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{html.escape(page.title_text)}</title>
-{FAVICON_HTML}
+{SHARED_HEADER_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
-/* Override site-wide style */
-body {{
-  font-family: sans-serif;
-}}
-
 /* Disable zoom-in on hover on touchscreens */
 @media (hover: hover) {{
   .artworks:hover img.artwork {{
@@ -569,10 +562,11 @@ body {{
 img.artwork {{
   position: relative;
   z-index: 0;
+  width: 100%;
 }}
 
 figcaption {{
-  margin: 1em 0em;
+  margin: 3em 0em;
 }}
 
 .hash_link {{
@@ -684,7 +678,7 @@ def generate_archive(
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon</title>
-{FAVICON_HTML}
+{SHARED_HEADER_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css">
 body {{
@@ -976,7 +970,7 @@ def generate_about(html_file: str) -> None:
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon</title>
-{FAVICON_HTML}
+{SHARED_HEADER_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css"></style>
 </head>
@@ -1001,7 +995,7 @@ def generate_contact(html_file: str) -> None:
   <meta charset="utf-8" />
   <meta name=viewport content="width=device-width, initial-scale=1">
   <title>{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon</title>
-{FAVICON_HTML}
+{SHARED_HEADER_HTML}
   <link rel="stylesheet" href="{CSS_PATH}/generic.css" />
   <style type="text/css"></style>
 </head>
