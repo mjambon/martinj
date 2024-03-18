@@ -69,6 +69,8 @@ local:
 # TODO: check links in CI rather than locally?
 .PHONY: push
 push:
+	git -C artdb commit -a -m 'Update data'
+	git -C artdb push origin main
 	git add ..
 	git commit -a -m 'Publish site'
 	git push origin main
