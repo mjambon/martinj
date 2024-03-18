@@ -1011,13 +1011,13 @@ def generate_contact(html_file: str) -> None:
 
 
 def load_artworks_csv() -> List[Dict[str, str]]:
-    with open('artworks.csv', 'r') as csvfile:
+    with open('artdb/artworks.csv', 'r') as csvfile:
         row_reader = csv.DictReader(csvfile)
         return list(row_reader)
 
 
 def load_series_csv() -> List[Dict[str, str]]:
-    with open('series.csv', 'r') as csvfile:
+    with open('artdb/series.csv', 'r') as csvfile:
         row_reader = csv.DictReader(csvfile)
         return list(row_reader)
 
