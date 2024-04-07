@@ -262,9 +262,10 @@ def get_title(row: Dict[str, str]) -> str:
     elif title_lang:
         raise Exception(f"Unsupported language '{title_lang}' in row {row}")
     if title1:
+        # show only one title because it looks better
         title = title1
-        if title2 and title2 != title1:
-            title = f"{title} ({title2})"
+        # if title2 and title2 != title1:
+        #    title = f"{title} ({title2})"
         return title
     else:
         return 'Untitled'
