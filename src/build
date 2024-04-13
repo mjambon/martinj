@@ -227,10 +227,10 @@ def format_dimensions(row: Dict[str, str]) -> Optional[str]:
     else:
         return None
 
-def format_support(row: Dict[str, str]) -> Optional[str]:
-    support = row['support']
-    if support:
-        return support
+def format_medium(row: Dict[str, str]) -> Optional[str]:
+    medium = row['medium']
+    if medium:
+        return medium
     else:
         return None
 
@@ -345,7 +345,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
 """
 
     dimensions = format_dimensions(row)
-    support = format_support(row)
+    support = format_medium(row)
     dim_html = ""
     if dimensions:
         line = dimensions
@@ -484,7 +484,7 @@ def print_series_row(row: Dict[str, str],
 """
 
     dimensions = format_dimensions(row)
-    support = format_support(row)
+    support = format_medium(row)
     dim_html = ""
     if dimensions:
         line = dimensions
