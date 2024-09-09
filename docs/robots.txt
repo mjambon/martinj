@@ -1,11 +1,1 @@
-# Please don't feed my artworks to your commercial AI service
-# without my permission.
-
-User-agent: CCBot
-Disallow: /img
-
-User-agent: ChatGPT-User
-Disallow: /img
-
-User-agent: GPTBot
-Disallow: /img
+User-agent: *
