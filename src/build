@@ -1207,8 +1207,8 @@ def main() -> None:
         description_html="""
 <p>
 Martin Jambon<br>
+Phone: <a href="tel:+16503903645">+1 650-390-3645</a><br>
 Email: <a href="mailto:martin@martinj.art">martin@martinj.art</a><br>
-Phone: +1 650-390-3645<br>
 Address: 1502 Madrono Ave, Palo Alto CA 94306, Palo Alto, United States<br>
 </p>
         """,
