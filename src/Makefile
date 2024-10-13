@@ -6,6 +6,7 @@ INDEX_DIRS = \
   about \
   contact \
   all \
+  catalog \
   series/* \
   tag/* \
   art/* \

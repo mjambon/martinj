@@ -134,11 +134,9 @@ class Page:
     folder: str
     # Output file
     html_file: str
-    # page-specific HTML data to insert at the beginning of the page
-    page_specific_html: str
     # CSV rows of artworks to display
     rows: List[Dict[str, str]]
-
+    show_price: bool = False
 
 # Sort the rows in the order specified by the list of IDs.
 def order_rows(
@@ -414,6 +412,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
 def print_series_row(row: Dict[str, str],
               html_file: TextIO,
               generate_dependencies: bool = False,
+              show_price: bool = False,
               force: bool = False) -> None:
     img_id = row['image_id']
     date_str = reformat_date(row['date'])
@@ -499,6 +498,13 @@ def print_series_row(row: Dict[str, str],
   Martin J., {date_str}\
 </div>
 """
+
+    price_html = (
+        f"<div>Price: ${int(row['price_usd']):,}</div>"
+        if 'price_usd' in row and row['price_usd']
+        else ""
+    )
+
     # Write to main page
     img_page_url = get_img_page_url(row)
     html_file.write(
@@ -512,7 +518,7 @@ f"""
   </a>
   <figcaption>
     {main_caption_html}{author_html}
-    <div class="medium_line">{dim_html}</div>
+    <div class="medium_line">{dim_html}</div>{price_html}
   </figcaption>
 </figure>
 """
@@ -590,7 +596,8 @@ figcaption {{
     )
         for row in rows:
             if row['show'] == '1':
-                print_series_row(row, out, generate_dependencies, force=force)
+                print_series_row(row, out, generate_dependencies,
+                                 show_price=page.show_price, force=force)
         out.write(
         """
 </div>
@@ -1049,7 +1056,6 @@ def extract_series(series_rows: List[Dict[str, str]],
             description_html=description_html,
             folder=f'series/{series_id}',
             html_file=f'series/{series_id}/index.html',
-            page_specific_html='',
             rows=rows
         )
     return [ create_page(series_id, rows)
@@ -1124,7 +1130,6 @@ def create_tag_pages(
             description_html=f'',
             folder=f'tag/{tag}',
             html_file=f'tag/{tag}/index.html',
-            page_specific_html='',
             rows=rows
         )
     return { tag:create_page(tag, rows)
@@ -1190,10 +1195,29 @@ def main() -> None:
         ),
         folder='all',
         html_file='all/index.html',
-        page_specific_html='This is everything.',
         rows=artwork_rows
     )
     generate_series(page_all, generate_dependencies=True, force=args.force)
+
+    # Catalog
+    os.makedirs('catalog', exist_ok=True)
+    page_catalog = Page(
+        title_text=f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Catalog",
+        title_html=f"{MARTINJ_HTML} {MARTINJ_SEP_HTML} Catalog",
+        description_html="""
+<p>
+Martin Jambon<br>
+Email: <a href="mailto:martin@martinj.art">martin@martinj.art</a><br>
+Phone: +1 650-390-3645<br>
+Address: 1502 Madrono Ave, Palo Alto CA 94306, Palo Alto, United States<br>
+</p>
+        """,
+        folder='catalog',
+        html_file='catalog/index.html',
+        rows=[ row for row in artwork_rows
+               if 'price_usd' in row and row['price_usd'] ],
+    )
+    generate_series(page_catalog, generate_dependencies=False, force=args.force)
 
     # Series
     os.makedirs('series', exist_ok=True)
