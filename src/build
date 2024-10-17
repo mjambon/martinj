@@ -501,7 +501,7 @@ def print_series_row(row: Dict[str, str],
 
     price_html = (
         f"<div>Price: ${int(row['price_usd']):,}</div>"
-        if 'price_usd' in row and row['price_usd']
+        if show_price and 'price_usd' in row and row['price_usd']
         else ""
     )
 
@@ -1219,6 +1219,7 @@ Artworks are shipped internationally, ready to hang.
         html_file='catalog/index.html',
         rows=[ row for row in artwork_rows
                if 'price_usd' in row and row['price_usd'] ],
+        show_price=True,
     )
     generate_series(page_catalog, generate_dependencies=False, force=args.force)
 
