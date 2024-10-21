@@ -1,4 +1,7 @@
 tmp
 
+# generated QR codes
+/qr
+
 # symlink to private data repo
 /artdb

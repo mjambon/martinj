@@ -32,6 +32,21 @@ all:
 	$(MAKE) local
 	git status
 
+# Make QR codes for all images, linking to the catalog page.
+#
+# Requires 'qr':
+#   pip install image qrcode
+#
+.PHONY: qr
+qr:
+	mkdir -p qr
+	for x in img/original/img-*.jpg; do \
+	  id=$$(basename "$$x" .jpg); \
+          url="https://martinj.art/catalog/#$$id"; \
+	  echo "encoding $$url"; \
+	  qr "$$url" --output=qr/qr-code-"$$id".png; \
+	done
+
 LOCAL_PORT = 8080
 LOCAL_URL = http://0.0.0.0:$(LOCAL_PORT)/
 
