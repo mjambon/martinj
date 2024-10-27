@@ -86,6 +86,10 @@ h3 {
   text-decoration: none;
 }
 
+.important_text {
+  font-weight: 300;
+}
+
 /*
   Artwork caption
 */
