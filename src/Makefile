@@ -37,14 +37,15 @@ all:
 # Requires 'qr':
 #   pip install image qrcode
 #
+QR_DIR = artdb/labels/qr
 .PHONY: qr
 qr:
-	mkdir -p qr
+	mkdir -p $(QR_DIR)
 	for x in img/original/img-*.jpg; do \
 	  id=$$(basename "$$x" .jpg); \
           url="https://martinj.art/catalog/#$$id"; \
 	  echo "encoding $$url"; \
-	  qr "$$url" --output=qr/qr-code-"$$id".png; \
+	  qr "$$url" --output=$(QR_DIR)/qr-code-"$$id".png; \
 	done
 
 LOCAL_PORT = 8080
