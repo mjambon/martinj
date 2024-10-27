@@ -500,7 +500,7 @@ def print_series_row(row: Dict[str, str],
 """
 
     price_html = (
-        f"<div>Price: ${int(row['price_usd']):,}</div>"
+        f"""<div class="price_line">Price: ${int(row['price_usd']):,}</div>"""
         if show_price and 'price_usd' in row and row['price_usd']
         else ""
     )

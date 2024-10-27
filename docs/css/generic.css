@@ -101,6 +101,11 @@ h3 {
   font-size: 80%;
 }
 
+.price_line {
+  margin: 1em 0em;
+  font-weight: 300;
+}
+
 /*
   Roboto font, copied from Google Fonts instructions
   (we don't use these classes but they tell us what's available)
