@@ -26,9 +26,15 @@ rebuild:
 	mypy --strict build
 	./build --force
 
+.PHONY: redirect
+redirect:
+	./redirect $(DOCROOT) catalogue /catalog
+	./redirect $(DOCROOT) cat /catalog
+
 .PHONY: all
 all:
 	$(MAKE) build
+	$(MAKE) redirect
 	$(MAKE) local
 	git status
 

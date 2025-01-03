@@ -1,0 +1,46 @@
+#! /usr/bin/env bash
+#
+# Generic script to produce JavaScript-based page redirects
+#
+set -eu
+
+usage() {
+cat <<EOF
+Usage: $0 ROOT_DIR SRC_PATH DST_URL
+EOF
+}
+
+if [[ $# != 3 ]]; then
+  usage >&2
+  exit 1
+fi
+
+case "$1" in
+  -*)
+    usage >&2
+    exit 1
+    ;;
+  *)
+    root_dir=$1
+    src_path=$2
+    dst_url=$3
+esac
+
+dst_dir=$root_dir/$src_path
+dst_html=$dst_dir/index.html
+mkdir -p "$dst_dir"
+
+cat > "$dst_html" <<EOF
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="refresh" content="0; url=$dst_url" />
+</head>
+<body>
+  <p>
+    You're being redirected to <a href="$dst_url">$dst_url</a>.
+  </p>
+</body>
+</html>
+EOF
