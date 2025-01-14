@@ -1,5 +1,7 @@
 User-agent: *
 Disallow: /catalog
+Disallow: /catalogue
+Disallow: /cat
 
 # Please don't feed my artworks to your commercial AI service
 # without my permission.
