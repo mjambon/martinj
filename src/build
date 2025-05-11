@@ -1101,6 +1101,7 @@ def sort_rows_for_tag(
         # List of artwork IDs to occur in this particular order
         ids = [
             "mj-20250102",
+            "mj-20250510",
             "mj-20240818",
             "mj-20250326",
             "mj-20240619",
