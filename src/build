@@ -1100,9 +1100,9 @@ def sort_rows_for_tag(
     if tag == "featured":
         # List of artwork IDs to occur in this particular order
         ids = [
+            "mj-20250628",
             "mj-20250102",
             "mj-20250510",
-            "mj-20240818",
             "mj-20250326",
             "mj-20240619",
             "mj-20250209",
