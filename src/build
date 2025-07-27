@@ -211,17 +211,26 @@ def needs_rebuild(src_files: List[str], dst_file: str) -> bool:
 def inches_to_cm(x: float) -> float:
     return 2.54 * x
 
+def cm_to_inches(x: float) -> float:
+    return x / 2.54
+
 def format_dimensions(row: Dict[str, str]) -> Optional[str]:
     width_cm = -1.0
     height_cm = -1.0
     if row['width_in'] and row['height_in']:
+        width_in = float(row['width_in'])
+        height_in = float(row['height_in'])
         width_cm = inches_to_cm(float(row['width_in']))
         height_cm = inches_to_cm(float(row['height_in']))
     if row['width_cm'] and row['height_cm']:
         width_cm = float(row['width_cm'])
         height_cm = float(row['height_cm'])
+        width_in = cm_to_inches(width_cm)
+        height_in = cm_to_inches(height_cm)
     if width_cm > 0:
-        return f"{height_cm:.0f} cm × {width_cm:.0f} cm"
+        return f'''
+{height_cm:.0f} cm × {width_cm:.0f} cm
+({height_in:.0f} in × {width_in:.0f} in)'''
     else:
         return None
 
@@ -322,12 +331,23 @@ def make_featured_gallery(
     dst_path = 'img/other/featured.gif'
     make_animated_gif(src_paths, dst_path, force=force)
 
+# Use vertical bars as a paragraph separator because Libreoffice
+# spreadsheets don't let us enter line breaks.
+# TODO: find a better way to store text?
+def artist_note_text_to_html(txt: str) -> str:
+    txt = f"{txt} – MJ"
+    paragraphs = "\n".join([
+        f'<div class="artist_note_paragraph">{html.escape(line)}</div>'
+        for line in txt.split("|")
+    ])
+    return f'<div class="artist_note">{paragraphs}</div>'
 
 def make_standalone_page(row: Dict[str, str]) -> None:
     artwork_id = row['artwork_id']
     img_id = row['image_id']
     date_str = reformat_date(row['date'])
     title = get_title(row)
+    artist_note = row['artist_note']
     img_name = img_id + '.jpg'
 
     img_url = IMG_PATH + '/large/' + img_name
@@ -359,6 +379,12 @@ def make_standalone_page(row: Dict[str, str]) -> None:
   Martin J., {date_str}
   {extra_credits}
 </div>
+"""
+
+    artist_note_html = ""
+    if artist_note:
+        artist_note_html = f"""
+{artist_note_text_to_html(artist_note)}
 """
 
     page_contents = f"""
@@ -399,6 +425,7 @@ def make_standalone_page(row: Dict[str, str]) -> None:
       <div class="medium_line">
         {dim_html}
       </div>
+      {artist_note_html}
     </div>
   </div>
 </body>
