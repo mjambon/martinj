@@ -23,7 +23,7 @@ CSS_PATH = '/css'
 SERIES_PATH = '/series'
 ART_PATH = '/art'
 
-VALID_TAGS = { 'for-rent', 'featured', 'portfolio' }
+VALID_TAGS = { 'featured', 'portfolio' }
 
 NAVBAR_HTML = """
 <div class="navbar">

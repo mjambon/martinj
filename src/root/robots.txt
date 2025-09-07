@@ -1,7 +1,10 @@
 User-agent: *
+
+# I don't want these pages to show up as web search results
 Disallow: /catalog
 Disallow: /catalogue
 Disallow: /cat
+Disallow: /tag/portfolio
 
 # Please don't feed my artworks to your commercial AI service
 # without my permission.
