@@ -47,6 +47,10 @@ figcaption {
 
 /* Even on mobile where the grid has only one column, reduce the vertical
    space between elements */
+.grid-view figure {
+  padding: 0px;
+}
+
 .grid-view figcaption {
   margin: 0px;
 }
@@ -55,10 +59,6 @@ figcaption {
   /* Show two paintings per row instead of one */
   .grid-view {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .grid-view figure {
-    padding: 0px;
   }
 }
 
