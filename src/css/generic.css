@@ -45,6 +45,12 @@ figcaption {
   margin: 3em 0em;
 }
 
+/* Even on mobile where the grid has only one column, reduce the vertical
+   space between elements */
+.grid-view figcaption {
+  margin: 0px;
+}
+
 @media (min-width: 600px) {
   /* Show two paintings per row instead of one */
   .grid-view {
@@ -53,10 +59,6 @@ figcaption {
 
   .grid-view figure {
     padding: 0px;
-  }
-
-  .grid-view figcaption {
-    margin: 0px;
   }
 }
 
