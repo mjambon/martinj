@@ -1118,7 +1118,7 @@ def title_of_tag(tag: str) -> Tuple[str, str]:
                  f"<!-- no title -->" )
     elif tag == "studies":
         return ( f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Studies by Martin Jambon",
-                 f"Studies" )
+                 f"{MARTINJ_HTML} {MARTINJ_SEP_HTML} Studies" )
     else:
         return ( f"{MARTINJ_TEXT} #{tag}",
                  f"{MARTINJ_HTML} #{tag}" )
