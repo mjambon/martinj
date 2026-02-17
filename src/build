@@ -28,6 +28,7 @@ VALID_TAGS = { 'featured', 'portfolio', 'studies' }
 NAVBAR_HTML = """
 <div class="navbar">
   <a href="/">Paintings</a>
+  <a href="/tag/studies">Studies</a>
   <a href="/about">About</a>
   <a href="/contact">Contact</a>
   <a href="/meta">WWW</a>
@@ -1115,6 +1116,9 @@ def title_of_tag(tag: str) -> Tuple[str, str]:
     if tag == "featured":
         return ( f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Art by Martin Jambon",
                  f"<!-- no title -->" )
+    elif tag == "studies":
+        return ( f"{MARTINJ_TEXT} {MARTINJ_SEP_TEXT} Studies by Martin Jambon",
+                 f"Studies" )
     else:
         return ( f"{MARTINJ_TEXT} #{tag}",
                  f"{MARTINJ_HTML} #{tag}" )
@@ -1156,10 +1160,18 @@ def create_tag_pages(
         rows = sort_rows_for_tag(tag, rows)
         grid_view = True if tag == 'studies' else False
         os.makedirs(f'tag/{tag}', exist_ok=True)
+        if tag == 'studies':
+            description_html="""
+<p>
+This is an ongoing series of simple, unpolished works on paper.
+</p>
+"""
+        else:
+            description_html=''
         return Page(
             title_text=title_text,
             title_html=title_html,
-            description_html=f'',
+            description_html=description_html,
             folder=f'tag/{tag}',
             html_file=f'tag/{tag}/index.html',
             grid_view=grid_view,
