@@ -601,10 +601,6 @@ img.artwork {{
   width: 100%;
 }}
 
-figcaption {{
-  margin: 3em 0em;
-}}
-
 .hash_link {{
   visibility: hidden;
 }}

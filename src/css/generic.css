@@ -30,8 +30,34 @@ a, a:active, a:visited {
   color: var(--text-color);
 }
 
-.artworks {
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
   padding-top: 40px;
+}
+
+figure {
+  padding: 90px 0px 50px;
+}
+
+figcaption {
+  margin: 3em 0em;
+}
+
+@media (min-width: 600px) {
+  /* Show two paintings per row instead of one */
+  .grid-view {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-view figure {
+    padding: 0px;
+  }
+
+  .grid-view figcaption {
+    margin: 0px;
+  }
 }
 
 .bureaucratic,
