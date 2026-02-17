@@ -23,7 +23,7 @@ CSS_PATH = '/css'
 SERIES_PATH = '/series'
 ART_PATH = '/art'
 
-VALID_TAGS = { 'featured', 'portfolio' }
+VALID_TAGS = { 'featured', 'portfolio', 'studies' }
 
 NAVBAR_HTML = """
 <div class="navbar">
@@ -599,10 +599,6 @@ img.artwork {{
   position: relative;
   z-index: 0;
   width: 100%;
-}}
-
-figcaption {{
-  margin: 3em 0em;
 }}
 
 .hash_link {{
