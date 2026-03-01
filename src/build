@@ -270,7 +270,6 @@ def get_title(row: Dict[str, str]) -> str:
         title = title1
         # if title2 and title2 != title1:
         #    title = f"{title} ({title2})"
-        print(f"title: {title}")
         return title
     else:
         return 'Untitled'
@@ -1051,10 +1050,10 @@ def is_defined(row: Dict[str, str], key: str) -> bool:
 # Something like 20250808-1 or 20250808
 ID_REGEXP = re.compile(r"""
   ^
-  (?P<year>  20[0-9]{2})   # year
-  (?P<month> [01][0-9])    # month
-  (?P<day>   [0-3][0-9])   # day of the month
-  (?: - (?P<num> [0-9]+) )  # optional disambiguator
+  (?P<year>  20[0-9]{2})     # year
+  (?P<month> [01][0-9])      # month
+  (?P<day>   [0-3][0-9])     # day of the month
+  (?: - (?P<num> [0-9]+) )?  # optional disambiguator
   $
 """, re.VERBOSE
 )
