@@ -31,7 +31,7 @@ NAVBAR_HTML = """
   <a href="/tag/studies">Studies</a>
   <a href="/about">About</a>
   <a href="/contact">Contact</a>
-  <a href="/meta">WWW</a>
+  <a href="/meta">∞</a>
 </div>
 """
 
