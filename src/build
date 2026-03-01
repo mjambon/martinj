@@ -142,16 +142,18 @@ class Page:
     rows: List[Dict[str, str]]
     show_price: bool = False
 
-# Sort the rows in the order specified by the list of IDs.
+# Sort the rows in the order specified by the list of IDs, then
+# by decreasing artwork ID
 def order_rows(
         ids: List[str], rows: List[Dict[str, str]]
 ) -> List[Dict[str, str]]:
-    id_tbl: Dict[str, int] = {}
+    id_tbl: Dict[str, Tuple[int, str]] = {}
     for index, id_ in enumerate(ids):
-        id_tbl[id_] = index
-    def get_key(row: Dict[str, str]) -> int:
-        return id_tbl.get(row['artwork_id'], 100000)
-    return sorted(rows, key=get_key)
+        id_tbl[id_] = (-index, '')
+    def get_key(row: Dict[str, str]) -> Tuple[int, str]:
+        return id_tbl.get(row['artwork_id'],
+                          (100000, row['artwork_id']))
+    return sorted(rows, key=get_key, reverse=True)
 
 
 # The built-in '.capitalize()' method will downcase the rest of the string,
@@ -245,15 +247,6 @@ def format_medium(row: Dict[str, str]) -> Optional[str]:
     else:
         return None
 
-def format_location(row: Dict[str, str]) -> Optional[str]:
-    gk = row['guardian_kind']
-    if gk == 'private' or gk == 'family':
-        return 'Private collection'
-    elif gk == 'ephemeral' or gk == 'recycled':
-        return 'Ephemeral'
-    else:
-        return None
-
 def verbose_command(argv: List[str]) -> None:
     print(f"{' '.join(argv)}")
     subprocess.run(argv)
@@ -277,6 +270,7 @@ def get_title(row: Dict[str, str]) -> str:
         title = title1
         # if title2 and title2 != title1:
         #    title = f"{title} ({title2})"
+        print(f"title: {title}")
         return title
     else:
         return 'Untitled'
@@ -1051,6 +1045,63 @@ def load_artworks_csv() -> List[Dict[str, str]]:
         row_reader = csv.DictReader(csvfile)
         return list(row_reader)
 
+def is_defined(row: Dict[str, str], key: str) -> bool:
+    return row[key] == ""
+
+# Something like 20250808-1 or 20250808
+ID_REGEXP = re.compile(r"""
+  ^
+  (?P<year>  20[0-9]{2})   # year
+  (?P<month> [01][0-9])    # month
+  (?P<day>   [0-3][0-9])   # day of the month
+  (?: - (?P<num> [0-9]+) )  # optional disambiguator
+  $
+""", re.VERBOSE
+)
+
+def extract_date_from_id(id: str) -> str:
+    match = ID_REGEXP.match(id)
+    if match:
+        year = match.group('year')
+        month = match.group('month')
+        day = match.group('day')
+        return f"{year}-{month}-{day}"
+    else:
+        raise ValueError(f"Invalid ID: {id}")
+
+# A simplified CSV file for studies on paper
+def load_studies_csv() -> List[Dict[str, str]]:
+    with open('artdb/studies.csv', 'r') as csvfile:
+        row_reader = csv.DictReader(csvfile)
+        rows = list(row_reader)
+        for row in rows:
+            if is_defined(row, "height_in") and is_defined(row, "width_in") \
+               or is_defined(row, "height_cm") and is_defined(row, "width_cm"):
+                pass
+            else:
+                row["height_in"] = "9"
+                row["width_in"] = "12"
+            row["artwork_id"] = f"mj-{row["id"]}"
+            row["image_id"] = f"img-{row["id"]}"
+            row["date"] = extract_date_from_id(row["id"])
+            row["title_en"] = f"Study #{row["study_num"]}"
+            row["title_fr"] = f"Étude no. {row["study_num"]}"
+            row["title_lang"] = "en"
+            row["show"] = "1" if row["show"] == "show" else "0"
+            row["tags"] = "studies"
+            row["medium"] = "acrylic on paper"
+            row["support"] = "paper"
+            row["favorite"] = "0"
+            row["owner"] = "Martin Jambon"
+            row["artist_note"] = ""
+            row["extra_credits"] = ""
+            row["series"] = ""
+            row["license_name"] = ""
+            row["license_url"] = ""
+            row["price_usd"] = ""
+            row[""] = ""
+        return rows
+
 
 def load_series_csv() -> List[Dict[str, str]]:
     with open('artdb/series.csv', 'r') as csvfile:
@@ -1151,7 +1202,7 @@ def sort_rows_for_tag(
         ]
         return order_rows(ids, rows)
     else:
-        return rows
+        return order_rows([], rows)
 
 def create_tag_pages(
         tagged_sets: Dict[str, List[Dict[str,str]]]
@@ -1216,7 +1267,7 @@ def main() -> None:
     os.makedirs('img/medium', exist_ok=True)
     os.makedirs('img/small', exist_ok=True)
 
-    artwork_rows = load_artworks_csv()
+    artwork_rows = load_artworks_csv() + load_studies_csv()
     series_rows = load_series_csv()
 
     check_title_uniqueness(artwork_rows)
